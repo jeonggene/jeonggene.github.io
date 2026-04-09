@@ -7,63 +7,394 @@
   <style>
     body {
       margin: 0;
-      font-family: Helvetica, Arial, sans-serif;
-      background: #f7f7f5;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #F7F7F5;
       color: #222;
-      padding: 60px 30px;
+      padding: 60px 28px 80px;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
-    .container {
-      max-width: 900px;
+
+    .page {
+      max-width: 760px;
       margin: 0 auto;
     }
-    h1 {
-      font-size: 42px;
-      margin-bottom: 40px;
-      font-weight: 500;
-    }
-    h2 {
-      font-size: 20px;
-      margin-top: 40px;
-      margin-bottom: 10px;
-      font-weight: 500;
-    }
-    p {
-      font-size: 16px;
-      line-height: 1.6;
-      margin: 4px 0;
-    }
+
     .back {
-      font-size: 14px;
-      margin-bottom: 30px;
       display: inline-block;
+      margin-bottom: 40px;
+      font-size: 13px;
+      color: #444;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .cover {
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .portrait {
+      width: 210px;
+      max-width: 60vw;
+      aspect-ratio: 3 / 4;
+      object-fit: cover;
+      display: block;
+      margin-bottom: 34px;
+    }
+
+    .name {
+      font-size: 34px;
+      font-weight: 400;
+      letter-spacing: 0.22em;
+      margin: 0 0 70px 0;
+    }
+
+    .cover-text {
+      font-size: 16px;
+      line-height: 1.45;
+      color: #8c8c8c;
+      letter-spacing: 0.06em;
+      margin: 0 0 34px 0;
+    }
+
+    .cover-contact {
+      font-size: 16px;
+      line-height: 1.45;
+      color: #8c8c8c;
+      letter-spacing: 0.04em;
+      margin: 0;
+    }
+
+    .cv-content {
+      padding-top: 40px;
+    }
+
+    .section {
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid #bfbfbf;
+    }
+
+    .section:first-of-type {
+      border-top: none;
+      padding-top: 0;
+      margin-top: 0;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      margin: 0 0 24px 0;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 165px 1fr;
+      gap: 18px;
+      margin-bottom: 24px;
+      align-items: start;
+    }
+
+    .date {
+      font-size: 15px;
+      color: #7d7d7d;
+      line-height: 1.45;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+
+    .entry-title {
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 1.35;
+      letter-spacing: 0.04em;
+      margin: 0;
+    }
+
+    .entry-subtitle {
+      font-size: 15px;
+      color: #9a9a9a;
+      line-height: 1.45;
+      margin: 2px 0 0 0;
+      letter-spacing: 0.03em;
+    }
+
+    .entry-description {
+      font-size: 15px;
+      color: #9a9a9a;
+      line-height: 1.45;
+      margin: 2px 0 0 0;
+      letter-spacing: 0.02em;
+    }
+
+    .skills-layout {
+      display: grid;
+      grid-template-columns: 165px 1fr;
+      gap: 18px;
+      margin-top: 8px;
+    }
+
+    .skills-label {
+      font-size: 15px;
+      color: #7d7d7d;
+      line-height: 1.45;
+      letter-spacing: 0.04em;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px 34px;
+    }
+
+    .skill-block-title {
+      font-size: 15px;
+      font-weight: 400;
+      line-height: 1.4;
+      letter-spacing: 0.05em;
+      margin: 0 0 2px 0;
+    }
+
+    .skill-block-text {
+      font-size: 15px;
+      color: #9a9a9a;
+      line-height: 1.45;
+      margin: 0;
+      letter-spacing: 0.02em;
+    }
+
+    .languages {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: 165px 1fr;
+      gap: 18px;
+    }
+
+    .language-list p {
+      margin: 0;
+      font-size: 15px;
+      line-height: 1.5;
+      letter-spacing: 0.03em;
+    }
+
+    .language-list strong {
+      font-weight: 400;
+      color: #222;
+    }
+
+    .muted {
+      color: #9a9a9a;
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding: 36px 20px 56px;
+      }
+
+      .cover {
+        min-height: auto;
+        padding: 30px 0 50px;
+      }
+
+      .portrait {
+        width: 180px;
+        margin-bottom: 26px;
+      }
+
+      .name {
+        font-size: 28px;
+        margin-bottom: 44px;
+      }
+
+      .row,
+      .skills-layout,
+      .languages {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+
+      .date,
+      .skills-label {
+        white-space: normal;
+      }
+
+      .skills-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .section-title {
+        font-size: 20px;
+      }
+
+      .entry-title {
+        font-size: 17px;
+      }
     }
   </style>
 </head>
 <body>
-
-  <div class="container">
-
+  <div class="page">
     <a href="index.html" class="back">← Retour</a>
 
-    <h1>CV</h1>
+    <section class="cover">
+      <!-- 프로필 사진 파일명만 바꿔도 됨 -->
+      <img src="profile.jpg" alt="Gene Jeong" class="portrait">
 
-    <h2>Formation</h2>
-    <p>Architecte DE — ENSAPM (Paris)</p>
+      <h1 class="name">GENE JEONG</h1>
 
-    <h2>Expérience</h2>
-    <p>— (여기 나중에 추가)</p>
+      <p class="cover-text">
+        3 rue Philibert Lucot<br>
+        75013 Paris
+      </p>
 
-    <h2>Compétences</h2>
-    <p>AutoCAD · Rhino · Adobe Suite · Maquette</p>
+      <p class="cover-contact">
+        jeonggene@gmail.com<br>
+        +33 06 12 19 13 15
+      </p>
+    </section>
 
-    <h2>Langues</h2>
-    <p>Français · Anglais · Coréen</p>
+    <section class="cv-content">
 
-    <h2>Contact</h2>
-    <p>Email : jeonggene@email.com</p>
-    <p>LinkedIn : lien</p>
+      <div class="section">
+        <h2 class="section-title">Formation</h2>
 
+        <div class="row">
+          <div class="date">2022 - 2025</div>
+          <div>
+            <p class="entry-title">Master d'étude en architecture</p>
+            <p class="entry-subtitle">PSL - ENSA Paris Malaquais, France</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2018 - 2022</div>
+          <div>
+            <p class="entry-title">Licence d'étude en architecture</p>
+            <p class="entry-subtitle">PSL - ENSA Paris Malaquais, France</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2017 - 2018</div>
+          <div>
+            <p class="entry-title">PACES : 1ère année aux commune aux études de santé</p>
+            <p class="entry-subtitle">Université de Strasbourg, France</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">février 2016</div>
+          <div>
+            <p class="entry-title">Diplôme de fin d'études secondaires</p>
+            <p class="entry-subtitle">Série : Scientifique / Corée du sud</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Expérience</h2>
+
+        <div class="row">
+          <div class="date">Depuis 2024</div>
+          <div>
+            <p class="entry-title">SAS Baik Lee / Paris</p>
+            <p class="entry-subtitle">Superviseure opérationnelle – restauration (CDI)</p>
+            <p class="entry-description">Coordination d’équipe et gestion opérationnelle en contexte de forte affluence.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2023 - 2024</div>
+          <div>
+            <p class="entry-title">ENSA Paris-Malaquais – PSL / Paris</p>
+            <p class="entry-subtitle">Monitrice Atelier informatique (CDD)</p>
+            <p class="entry-description">Interface étudiants / enseignants / administration – organisation et gestion des priorités.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2023</div>
+          <div>
+            <p class="entry-title">Studio Razavi / Paris</p>
+            <p class="entry-subtitle">Stagiaire, assistante design (3 mois)</p>
+            <p class="entry-description">Concours Fondation de France – participation aux études et production graphique.</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2021</div>
+          <div>
+            <p class="entry-title">TOP ENGINEERING CO., LTD / Corée du sud</p>
+            <p class="entry-subtitle">Stagiaire, assistante design (1 mois)</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="date">2019</div>
+          <div>
+            <p class="entry-title">Société Bouzguenda frères / Tunisie</p>
+            <p class="entry-subtitle">Stagiaire ouvrier, chantier (2 semaines)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2 class="section-title">Compétence</h2>
+
+        <div class="skills-layout">
+          <div class="skills-label">Logiciel</div>
+
+          <div class="skills-grid">
+            <div>
+              <p class="skill-block-title">CAD/BIM</p>
+              <p class="skill-block-text">AutoCAD, Revit</p>
+            </div>
+
+            <div>
+              <p class="skill-block-title">Dessin 3D</p>
+              <p class="skill-block-text">Rhinoceros, SketchUp</p>
+            </div>
+
+            <div>
+              <p class="skill-block-title">Image Rendu</p>
+              <p class="skill-block-text">V-Ray, Enscape</p>
+            </div>
+
+            <div>
+              <p class="skill-block-title">Cartographie</p>
+              <p class="skill-block-text">QGIS</p>
+            </div>
+
+            <div>
+              <p class="skill-block-title">Adobe</p>
+              <p class="skill-block-text">Photoshop, Illustrator, InDesign, Premiere Pro</p>
+            </div>
+
+            <div>
+              <p class="skill-block-title">MS Office</p>
+              <p class="skill-block-text">Word, PowerPoint, Excel</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="languages">
+          <div class="skills-label">Langue</div>
+          <div class="language-list">
+            <p><strong>Coréen</strong> <span class="muted">Maternelle</span></p>
+            <p><strong>Français</strong> <span class="muted">Bilingue</span></p>
+            <p><strong>Anglais</strong> <span class="muted">Intermédiaire</span></p>
+          </div>
+        </div>
+      </div>
+
+    </section>
   </div>
-
 </body>
 </html>
