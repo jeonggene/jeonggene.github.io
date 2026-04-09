@@ -4,56 +4,85 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Projects — Gene Jeong</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Helvetica, Arial, sans-serif;
-      background: #f7f7f5;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: #F7F7F5;
       color: #222;
       padding: 60px 30px;
     }
+
     .container {
-      max-width: 900px;
+      max-width: 1000px;
       margin: 0 auto;
     }
+
+    .back {
+      font-size: 14px;
+      margin-bottom: 30px;
+      display: inline-block;
+      text-decoration: none;
+      color: #222;
+    }
+
     h1 {
       font-size: 42px;
       margin-bottom: 40px;
       font-weight: 500;
       letter-spacing: -0.5px;
     }
-    .project {
-      margin-bottom: 60px;
+
+    /* 🔥 핵심: GRID */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 30px;
     }
-    img {
+
+    .project img {
       width: 100%;
       aspect-ratio: 4 / 3;
-  object-fit: cover;
+      object-fit: cover;
       margin-bottom: 10px;
-      
+      display: block;
+      transition: 0.3s;
     }
+
+    /* hover 효과 */
+    .project:hover img {
+      opacity: 0.85;
+    }
+
     h2 {
       font-size: 18px;
       margin-bottom: 6px;
       font-weight: 500;
-      letter-spacing: -0.3px; 
+      letter-spacing: -0.3px;
     }
+
     p {
       font-size: 14px;
       color: #666;
       line-height: 1.6;
     }
+
     a {
       text-decoration: none;
       color: inherit;
     }
-    .back {
-      font-size: 14px;
-      margin-bottom: 30px;
-      display: inline-block;
+
+    /* 모바일 대응 */
+    @media (max-width: 700px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
     }
+
   </style>
 </head>
+
 <body>
 
   <div class="container">
@@ -62,33 +91,35 @@
 
     <h1>Projects</h1>
 
-    <!-- Projet 1 -->
     <div class="projects-grid">
-      
-    <div class="project">
-      <a href="entre-mer-memoire.html">
-        <img src="imgbunkermap.jpg" alt="Entre mer et mémoire">
-        <h2>Entre mer et mémoire</h2>
-        <p>Réhabilitation du sémaphore et des bunkers de la pointe du Grouin, Cancale</p>
-      </a>
-    </div>
 
-    <!-- Projet 2 -->
-    <div class="project">
-      <a href="maison-philanthropie.html">
-        <img src="2309046 copy.jpg" alt="Maison de la Philanthropie">
-        <h2>Maison de la Philanthropie</h2>
-        <p>Projet de réhabilitation et transformation Fondation de Paris</p>
-      </a>
-    </div>
+      <!-- Projet 1 -->
+      <div class="project">
+        <a href="entre-mer-memoire.html">
+          <img src="imgbunkermap.jpg">
+          <h2>Entre mer et mémoire</h2>
+          <p>Réhabilitation du sémaphore et des bunkers de la pointe du Grouin, Cancale</p>
+        </a>
+      </div>
 
-    <!-- Projet 3 -->
-    <div class="project">
-      <a href="a-travers-les-paysages.html">
-        <img src="P7.jpg" alt="À travers les Paysages">
-        <h2>À travers les Paysages</h2>
-        <p>Projet d’urbanisme pour le site de l’ENCAN à Ciboure</p>
-      </a>
+      <!-- Projet 2 -->
+      <div class="project">
+        <a href="maison-philanthropie.html">
+          <img src="2309046 copy.jpg">
+          <h2>Maison de la Philanthropie</h2>
+          <p>Projet de réhabilitation et transformation Fondation de Paris</p>
+        </a>
+      </div>
+
+      <!-- Projet 3 -->
+      <div class="project">
+        <a href="a-travers-les-paysages.html">
+          <img src="P7.jpg">
+          <h2>À travers les Paysages</h2>
+          <p>Projet d’urbanisme pour le site de l’ENCAN à Ciboure</p>
+        </a>
+      </div>
+
     </div>
 
   </div>
