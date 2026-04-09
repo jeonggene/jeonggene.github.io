@@ -15,57 +15,59 @@
     }
 
     .container {
-      max-width: 1000px;
+      max-width: 1100px;
       margin: 0 auto;
     }
 
     .back {
-      font-size: 14px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
       margin-bottom: 30px;
       display: inline-block;
       text-decoration: none;
-      color: #222;
+      color: #666;
     }
 
     h1 {
-      font-size: 42px;
-      margin-bottom: 40px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
+      font-size: 38px;
+      margin-bottom: 44px;
+      font-weight: 400;
+      letter-spacing: 0.08em;
     }
 
-    /* 🔥 핵심: GRID */
     .projects-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 40px 30px;
+      gap: 46px 34px;
     }
 
     .project img {
       width: 100%;
       aspect-ratio: 4 / 3;
       object-fit: cover;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       display: block;
-      transition: 0.3s;
+      transition: opacity 0.25s ease;
+      background: #f1f1ef;
     }
 
-    /* hover 효과 */
     .project:hover img {
-      opacity: 0.85;
+      opacity: 0.88;
     }
 
     h2 {
       font-size: 18px;
-      margin-bottom: 6px;
-      font-weight: 500;
-      letter-spacing: -0.3px;
+      margin: 0 0 6px 0;
+      font-weight: 400;
+      letter-spacing: 0.03em;
     }
 
     p {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.6;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.5;
+      margin: 0;
+      letter-spacing: 0.02em;
     }
 
     a {
@@ -73,13 +75,11 @@
       color: inherit;
     }
 
-    /* 모바일 대응 */
-    @media (max-width: 700px) {
+    @media (max-width: 760px) {
       .projects-grid {
         grid-template-columns: 1fr;
       }
     }
-
   </style>
 </head>
 
@@ -87,36 +87,99 @@
 
   <div class="container">
 
-    <a href="index.html" class="back">← Retour</a>
+    <a href="index.html" class="back">← RETOUR</a>
 
     <h1>Projects</h1>
 
     <div class="projects-grid">
 
-      <!-- Projet 1 -->
+      <!-- 1 -->
       <div class="project">
         <a href="entre-mer-memoire.html">
-          <img src="imgbunkermap.jpg">
+          <img src="imgbunkermap.jpg" alt="Entre mer et mémoire">
           <h2>Entre mer et mémoire</h2>
           <p>Réhabilitation du sémaphore et des bunkers de la pointe du Grouin, Cancale</p>
         </a>
       </div>
 
-      <!-- Projet 2 -->
+      <!-- 2 -->
       <div class="project">
         <a href="maison-philanthropie.html">
-          <img src="2309046 copy.jpg">
+          <img src="2309046 copy.jpg" alt="Maison de la Philanthropie">
           <h2>Maison de la Philanthropie</h2>
-          <p>Projet de réhabilitation et transformation Fondation de Paris</p>
+          <p>Projet de réhabilitation et transformation – Fondation de Paris</p>
         </a>
       </div>
 
-      <!-- Projet 3 -->
+      <!-- 3 -->
       <div class="project">
         <a href="a-travers-les-paysages.html">
-          <img src="P7.jpg">
+          <img src="P7.jpg" alt="À travers les Paysages">
           <h2>À travers les Paysages</h2>
           <p>Projet d’urbanisme pour le site de l’ENCAN à Ciboure</p>
+        </a>
+      </div>
+
+      <!-- 4 -->
+      <div class="project">
+        <a href="resurrection-parking.html">
+          <img src="rp1.jpg" alt="Resurrection Parking">
+          <h2>Resurrection Parking</h2>
+          <p>Projet de réhabilitation d’un parking et d’un centre commercial</p>
+        </a>
+      </div>
+
+      <!-- 5 -->
+      <div class="project">
+        <a href="grape-escapes.html">
+          <img src="ge1.jpg" alt="Grape Escapes">
+          <h2>Grape Escapes</h2>
+          <p>Réhabilitation d’une fonderie en centre d’interprétation du vin</p>
+        </a>
+      </div>
+
+      <!-- 6 -->
+      <div class="project">
+        <a href="remix-house-vi.html">
+          <img src="rh1.jpg" alt="REMIX House VI">
+          <h2>REMIX House VI</h2>
+          <p>Projet d’un pavillon temporaire</p>
+        </a>
+      </div>
+
+      <!-- 7 -->
+      <div class="project">
+        <a href="contraste.html">
+          <img src="ct1.jpg" alt="Contraste">
+          <h2>Contraste</h2>
+          <p>Projet d’un atelier fabrication</p>
+        </a>
+      </div>
+
+      <!-- 8 -->
+      <div class="project">
+        <a href="paris-angle-vue.html">
+          <img src="pav1.jpg" alt="Paris, Angle, Vue">
+          <h2>Paris, Angle, Vue</h2>
+          <p>Projet d’un logement collectif</p>
+        </a>
+      </div>
+
+      <!-- 9 -->
+      <div class="project">
+        <a href="the-reading-space.html">
+          <img src="trs2.jpg" alt="The reading Space">
+          <h2>The reading Space</h2>
+          <p>Projet d’un tunel</p>
+        </a>
+      </div>
+
+      <!-- 10 -->
+      <div class="project">
+        <a href="light-leaves.html">
+          <img src="ll2.jpg" alt="Light Leaves">
+          <h2>Light Leaves</h2>
+          <p>Projet de fabrication d’une lampe</p>
         </a>
       </div>
 
