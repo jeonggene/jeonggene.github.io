@@ -4,34 +4,45 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Gene Jeong</title>
+
   <style>
     body {
       margin: 0;
-      font-family: Helvetica, Arial, sans-serif;
-      background: #f6f1e8;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+      /* 🔥 모던 화이트 + 종이 질감 */
+      background: #FAFAFA;
+      background-image: url("https://www.transparenttextures.com/patterns/white-paper.png");
+
       color: #222;
       padding: 60px 30px;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
     }
+
     h1 {
       font-size: 64px;
       margin-bottom: 20px;
       font-weight: 500;
+      letter-spacing: -0.5px;
     }
+
     p {
       font-size: 18px;
       line-height: 1.6;
       margin-top: 0;
     }
+
     .buttons {
-      margin-top: 50px;
+      margin-top: 60px;
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
     }
+
     .button {
       display: inline-block;
       padding: 14px 24px;
@@ -39,19 +50,34 @@
       text-decoration: none;
       color: #222;
       font-size: 16px;
+      transition: 0.2s;
     }
+
+    /* 🔥 hover 효과 */
+    .button:hover {
+      background: #222;
+      color: white;
+    }
+
   </style>
 </head>
+
 <body>
   <div class="container">
+
     <h1>Gene Jeong</h1>
+
     <p>Architecte DE · Réhabilitation du patrimoine · Paris</p>
-    <p>Une approche située, entre mémoire, matière et territoire.</p>
+
+    <p>
+      Une approche située, entre mémoire, matière et territoire.
+    </p>
 
     <div class="buttons">
       <a class="button" href="projects.html">Projects</a>
       <a class="button" href="cv.html">CV</a>
     </div>
+
   </div>
 </body>
 </html>
