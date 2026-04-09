@@ -10,13 +10,11 @@
       margin: 0;
       font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-      /* 🔥 화이트 + 종이 질감 */
       background: #FAFAFA;
       background-image: url("https://www.transparenttextures.com/patterns/white-paper.png");
 
       color: #222;
 
-      /* 🔥 중앙 정렬 핵심 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -45,6 +43,15 @@
       margin-top: 8px;
     }
 
+    /* ✅ 핵심 수정 */
+    .tagline {
+      font-size: 15px;
+      color: #9a9a9a;
+      line-height: 1.6;
+      letter-spacing: 0.01em;
+      margin-top: 10px;
+    }
+
     .buttons {
       margin-top: 50px;
       display: flex;
@@ -52,7 +59,6 @@
       gap: 16px;
     }
 
-    /* 🔥 얇은 버튼 */
     .button {
       padding: 8px 18px;
       border: 1px solid #222;
@@ -68,6 +74,14 @@
       color: #fff;
     }
 
+    /* ✅ footer도 톤 맞추기 */
+    footer {
+      margin-top: 40px;
+      font-size: 12px;
+      color: #999;
+      letter-spacing: 0.06em;
+    }
+
   </style>
 </head>
 
@@ -78,22 +92,21 @@
     <h1>Gene Jeong</h1>
 
     <p>Architecte DE · Paris</p>
-    <p>Réhabiliter l’existant. Transformer avec précision. Révéler les traces.</p>
+
+    <p class="tagline">
+      Réhabiliter l’existant. Transformer avec précision. Révéler les traces.
+    </p>
 
     <div class="buttons">
       <a class="button" href="projects.html">PROJECTS</a>
       <a class="button" href="cv.html">CV</a>
     </div>
 
+    <footer>
+      © 2026 Gene Jeong — Architecte DE
+    </footer>
 
-
-
-    
-<footer>
-© 2026 Gene Jeong — Architecte DE
-</footer>
   </div>
 
 </body>
 </html>
-
