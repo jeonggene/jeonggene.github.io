@@ -133,12 +133,7 @@
       background: var(--line);
     }
 
-    figure,
-    .hero-right figure,
-    .full figure,
-    .two-col figure,
-    .mixed-right figure,
-    .bottom-pair figure {
+    figure {
       margin: 0;
     }
 
@@ -183,7 +178,6 @@
       align-items: end;
     }
 
-    /* 공통 이미지 프레임 */
     .media-frame {
       width: 100%;
       background: var(--panel);
@@ -200,7 +194,6 @@
       display: block;
     }
 
-    /* 타입별 프레임 크기 */
     .frame-hero {
       height: 760px;
     }
@@ -219,33 +212,6 @@
 
     .frame-small {
       height: 420px;
-    }
-
-    .material-grid {
-      margin-top: 28px;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 18px;
-    }
-
-    .material-item .media-frame {
-      aspect-ratio: 1 / 1;
-      height: auto;
-    }
-
-    .material-item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .material-item p {
-      margin: 10px 0 0 0;
-      font-size: 11px;
-      line-height: 1.35;
-      color: #555;
-      text-align: center;
     }
 
     @media (max-width: 1100px) {
@@ -275,10 +241,6 @@
         aspect-ratio: 4 / 3;
       }
 
-      .material-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
       .page {
         padding: 24px 20px 56px;
       }
@@ -295,11 +257,6 @@
 
       .intro p {
         font-size: 12px;
-      }
-
-      .material-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
       }
     }
   </style>
@@ -404,15 +361,12 @@
           <figcaption class="caption right">Vue projet depuis le bunker 2</figcaption>
         </figure>
 
-      <div class="stack">
         <figure>
           <div class="media-frame frame-small">
-            <img src="emm6.jpg" alt="matériaux">
+            <img src="emm6.jpg" alt="Matériaux">
           </div>
-          <figcaption class="caption right">Vue projet depuis le bunker 2</figcaption>
+          <figcaption class="caption right">Matériaux</figcaption>
         </figure>
-        
-        </div>
       </div>
     </section>
 
