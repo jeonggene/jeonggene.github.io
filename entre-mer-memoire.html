@@ -10,6 +10,7 @@
       --text: #1f1f1f;
       --muted: #7d7d7d;
       --line: #bcbcbc;
+      --panel: #f8f8f6;
     }
 
     * {
@@ -132,22 +133,13 @@
       background: var(--line);
     }
 
+    figure,
     .hero-right figure,
     .full figure,
     .two-col figure,
     .mixed-right figure,
     .bottom-pair figure {
       margin: 0;
-    }
-
-    .hero-right img,
-    .full img,
-    .two-col img,
-    .mixed-right img,
-    .bottom-pair img {
-      width: 100%;
-      height: auto;
-      display: block;
     }
 
     .caption {
@@ -184,6 +176,51 @@
       gap: 34px;
     }
 
+    .bottom-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 54px;
+      align-items: end;
+    }
+
+    /* 공통 이미지 프레임 */
+    .media-frame {
+      width: 100%;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .media-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* 타입별 프레임 크기 */
+    .frame-hero {
+      height: 760px;
+    }
+
+    .frame-full {
+      height: 900px;
+    }
+
+    .frame-tall {
+      height: 980px;
+    }
+
+    .frame-medium {
+      height: 760px;
+    }
+
+    .frame-small {
+      height: 420px;
+    }
+
     .material-grid {
       margin-top: 28px;
       display: grid;
@@ -191,10 +228,15 @@
       gap: 18px;
     }
 
-    .material-item img {
+    .material-item .media-frame {
       aspect-ratio: 1 / 1;
-      object-fit: cover;
+      height: auto;
+    }
+
+    .material-item img {
       width: 100%;
+      height: 100%;
+      object-fit: cover;
       display: block;
     }
 
@@ -204,17 +246,6 @@
       line-height: 1.35;
       color: #555;
       text-align: center;
-    }
-
-    .bottom-pair {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 54px;
-      align-items: end;
-    }
-
-    .section-space {
-      height: 18px;
     }
 
     @media (max-width: 1100px) {
@@ -228,14 +259,20 @@
 
       .hero-left {
         min-height: auto;
+        padding: 0;
       }
 
       .hero {
         min-height: auto;
       }
 
-      .hero-left {
-        padding: 0;
+      .frame-hero,
+      .frame-full,
+      .frame-tall,
+      .frame-medium,
+      .frame-small {
+        height: auto;
+        aspect-ratio: 4 / 3;
       }
 
       .material-grid {
@@ -278,7 +315,6 @@
         <div class="vol">VOL.01</div>
 
         <div class="shell-wrap">
-          <!-- 굴껍질 드로잉 이미지 있으면 파일명 바꿔도 됨 -->
           <img src="shell.png" alt="shell">
         </div>
 
@@ -316,7 +352,9 @@
 
       <div class="hero-right">
         <figure>
-          <img src="emm1.png" alt="Plan de site">
+          <div class="media-frame frame-hero">
+            <img src="emm1.png" alt="Plan de site">
+          </div>
           <figcaption class="caption">Plan de site</figcaption>
         </figure>
       </div>
@@ -325,7 +363,9 @@
     <!-- SPREAD 2 -->
     <section class="spread full">
       <figure>
-        <img src="emm2.png" alt="Plan et axonométries des bunkers">
+        <div class="media-frame frame-full">
+          <img src="emm2.png" alt="Plan et axonométries des bunkers">
+        </div>
         <figcaption class="caption">Plan d’emplacement des bunkers et axonométries</figcaption>
       </figure>
     </section>
@@ -333,12 +373,16 @@
     <!-- SPREAD 3 -->
     <section class="spread two-col">
       <figure>
-        <img src="emm3.jpg" alt="Plan de site du sémaphore">
+        <div class="media-frame frame-tall">
+          <img src="emm3.jpg" alt="Plan de site du sémaphore">
+        </div>
         <figcaption class="caption">Plan de site</figcaption>
       </figure>
 
       <figure>
-        <img src="emm4.png" alt="Axonométrie du sémaphore">
+        <div class="media-frame frame-tall">
+          <img src="emm4.png" alt="Axonométrie du sémaphore">
+        </div>
         <figcaption class="caption">Axonométrie du sémaphore</figcaption>
       </figure>
     </section>
@@ -346,31 +390,43 @@
     <!-- SPREAD 4 -->
     <section class="spread mixed-right">
       <figure>
-        <img src="emm5.png" alt="Plan RDC">
+        <div class="media-frame frame-medium">
+          <img src="emm5.png" alt="Plan RDC">
+        </div>
         <figcaption class="caption">Plan RDC du sémaphore et bunker 1</figcaption>
       </figure>
 
       <div class="stack">
         <figure>
-          <img src="emm6.jpg" alt="Vue projet depuis le bunker 2">
+          <div class="media-frame frame-small">
+            <img src="emm6.jpg" alt="Vue projet depuis le bunker 2">
+          </div>
           <figcaption class="caption right">Vue projet depuis le bunker 2</figcaption>
         </figure>
 
         <div class="material-grid">
           <div class="material-item">
-            <img src="mat1.jpg" alt="matériau 1">
+            <div class="media-frame">
+              <img src="mat1.jpg" alt="matériau 1">
+            </div>
             <p>Revêtement des écailles<br>SE100</p>
           </div>
           <div class="material-item">
-            <img src="mat2.jpg" alt="matériau 2">
+            <div class="media-frame">
+              <img src="mat2.jpg" alt="matériau 2">
+            </div>
             <p>Revêtement des écailles<br>SE75</p>
           </div>
           <div class="material-item">
-            <img src="mat3.jpg" alt="matériau 3">
+            <div class="media-frame">
+              <img src="mat3.jpg" alt="matériau 3">
+            </div>
             <p>Béton en poudre<br>de coquille d’huître</p>
           </div>
           <div class="material-item">
-            <img src="mat4.jpg" alt="matériau 4">
+            <div class="media-frame">
+              <img src="mat4.jpg" alt="matériau 4">
+            </div>
             <p>Béton en poudre<br>de coquille d’huître</p>
           </div>
         </div>
@@ -380,12 +436,16 @@
     <!-- SPREAD 5 -->
     <section class="spread bottom-pair">
       <figure>
-        <img src="emm7.jpg" alt="Vue intérieure">
+        <div class="media-frame frame-small">
+          <img src="emm7.jpg" alt="Vue intérieure">
+        </div>
         <figcaption class="caption right">Vue intérieure du bunker n°2</figcaption>
       </figure>
 
       <figure>
-        <img src="emm8.png" alt="Maquette de projet">
+        <div class="media-frame frame-small">
+          <img src="emm8.png" alt="Maquette de projet">
+        </div>
         <figcaption class="caption right">Maquette de projet</figcaption>
       </figure>
     </section>
