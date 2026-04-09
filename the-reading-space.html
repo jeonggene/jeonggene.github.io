@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The reading Space</title>
+  <style>
+    :root {
+      --bg: #f3f3f1;
+      --text: #1f1f1f;
+      --muted: #7d7d7d;
+      --line: #bcbcbc;
+      --panel: #f8f8f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      max-width: 1380px;
+      margin: 0 auto;
+      padding: 34px 42px 80px;
+    }
+
+    .back {
+      display: inline-block;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 42px;
+    }
+
+    .spread {
+      margin-bottom: 88px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.02fr 1.1fr;
+      gap: 64px;
+      align-items: start;
+      min-height: 78vh;
+    }
+
+    .hero-left {
+      padding: 12px 8px 0 8px;
+      display: flex;
+      flex-direction: column;
+      min-height: 78vh;
+    }
+
+    .vol {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      color: #555;
+      margin-bottom: 54px;
+    }
+
+    .hero-sketch {
+      text-align: center;
+      margin-bottom: 34px;
+    }
+
+    .hero-sketch img {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      display: inline-block;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      margin: 20px 0 22px 0;
+    }
+
+    .title-line {
+      width: 100%;
+      height: 1px;
+      background: var(--line);
+      margin: 0 0 18px 0;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1.35;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      text-transform: uppercase;
+      max-width: 530px;
+      margin: 0 auto 58px;
+    }
+
+    .intro {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .intro p {
+      font-size: 13px;
+      line-height: 1.45;
+      letter-spacing: 0.025em;
+      color: #666;
+      margin: 0 0 16px 0;
+      text-align: justify;
+    }
+
+    .hero-footer {
+      margin-top: auto;
+      padding-top: 40px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+
+    .hero-line {
+      flex: 1;
+      height: 1px;
+      background: var(--line);
+    }
+
+    figure {
+      margin: 0;
+    }
+
+    .caption {
+      font-size: 11px;
+      color: #666;
+      letter-spacing: 0.03em;
+      margin-top: 8px;
+    }
+
+    .caption.right {
+      text-align: right;
+    }
+
+    .caption.center {
+      text-align: center;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 54px;
+      align-items: start;
+    }
+
+    .media-frame {
+      width: 100%;
+      background: var(--panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .media-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .frame-hero {
+      height: 860px;
+    }
+
+    .frame-medium {
+      height: 620px;
+    }
+
+    .frame-wide {
+      height: 720px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero,
+      .two-col {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .hero-left {
+        min-height: auto;
+        padding: 0;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .frame-hero,
+      .frame-medium,
+      .frame-wide {
+        height: auto;
+        aspect-ratio: 4 / 3;
+      }
+
+      .page {
+        padding: 24px 20px 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <a href="projects.html" class="back">← RETOUR AUX PROJETS</a>
+
+    <section class="spread hero">
+      <div class="hero-left">
+        <div class="vol">VOL.06</div>
+
+        <figure class="hero-sketch">
+          <img src="trs1.jpg" alt="Élévation de la structure">
+        </figure>
+
+        <h1 class="title">The reading Space</h1>
+        <div class="title-line"></div>
+
+        <p class="subtitle">
+          Projet d’un tunel
+        </p>
+
+        <div class="intro">
+          <p>
+            Ce projet propose un espace de lecture installé dans un environnement paysager, en s’inspirant des structures organiques et des postures multiples du corps au repos.
+          </p>
+          <p>
+            L’intervention développe une forme continue, à la fois assise, abri et seuil, capable d’accueillir des usages variés : s’adosser, s’asseoir, s’allonger, lire ou traverser.
+          </p>
+          <p>
+            Le projet explore ainsi la relation entre structure répétitive, échelle du corps et expérience sensible, en transformant un simple dispositif en micro-architecture habitée.
+          </p>
+        </div>
+
+        <div class="hero-footer">
+          <div class="hero-line"></div>
+          <div>Paris&nbsp;&nbsp;2019</div>
+        </div>
+      </div>
+
+      <div>
+        <figure>
+          <div class="media-frame frame-hero">
+            <img src="trs2.jpg" alt="Vue du projet">
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <section class="spread two-col">
+      <figure>
+        <div class="media-frame frame-medium">
+          <img src="trs3.jpg" alt="Plan, Axonométrie, Elevation et Coupe">
+        </div>
+      </figure>
+
+      <figure>
+        <div class="media-frame frame-medium">
+          <img src="trs4.jpg" alt="Itérations et structure">
+        </div>
+      </figure>
+    </section>
+  </div>
+</body>
+</html>
