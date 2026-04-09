@@ -52,7 +52,7 @@
     .hero {
       min-height: 82vh;
       display: grid;
-      grid-template-columns: 1fr 0.95fr;
+      grid-template-columns: 1fr 1fr;
       gap: 72px;
       align-items: start;
     }
@@ -66,6 +66,7 @@
       display: flex;
       flex-direction: column;
       min-height: 72vh;
+      align-items: flex-end;
     }
 
     .vol {
@@ -73,13 +74,17 @@
       letter-spacing: 0.12em;
       color: #555;
       margin-bottom: 110px;
-      text-align: center;
+      text-align: right;
+      width: 100%;
+      max-width: 560px;
     }
 
     .studio {
-      text-align: center;
+      text-align: right;
       margin-bottom: 82px;
       line-height: 1.15;
+      width: 100%;
+      max-width: 560px;
     }
 
     .studio .line1 {
@@ -100,15 +105,18 @@
     }
 
     .title {
-      text-align: center;
+      text-align: right;
       font-size: 18px;
       font-weight: 400;
       letter-spacing: 0.14em;
       margin: 0 0 24px 0;
+      width: 100%;
+      max-width: 560px;
     }
 
     .title-line {
       width: 100%;
+      max-width: 560px;
       height: 1px;
       background: #ececec;
       margin: 0 0 20px 0;
@@ -122,12 +130,15 @@
       color: var(--muted);
       text-transform: uppercase;
       margin: 0 0 84px 0;
+      width: 100%;
+      max-width: 560px;
     }
 
     .intro {
       max-width: 560px;
+      width: 100%;
       margin-left: auto;
-  margin-right: 0;
+      margin-right: 0;
       text-align: left;
     }
 
@@ -148,6 +159,8 @@
       color: var(--muted);
       font-size: 11px;
       letter-spacing: 0.08em;
+      width: 100%;
+      max-width: 560px;
     }
 
     .hero-line {
@@ -219,7 +232,6 @@
       letter-spacing: 0.06em;
     }
 
-    /* 통일 프레임 */
     .media-frame {
       width: 100%;
       background: var(--panel);
@@ -236,7 +248,6 @@
       display: block;
     }
 
-    /* 프레임 타입 */
     .frame-large {
       height: 640px;
     }
@@ -266,12 +277,33 @@
         min-height: auto;
       }
 
+      .hero-right {
+        align-items: stretch;
+      }
+
+      .vol,
+      .studio,
+      .title,
+      .title-line,
+      .subtitle,
+      .intro,
+      .hero-footer {
+        max-width: none;
+        width: 100%;
+      }
+
       .vol {
         margin-bottom: 46px;
+        text-align: left;
       }
 
       .studio {
         margin-bottom: 44px;
+        text-align: left;
+      }
+
+      .title {
+        text-align: left;
       }
 
       .subtitle {
@@ -432,16 +464,12 @@
           <figcaption class="caption right">Vue de l’accueil</figcaption>
         </figure>
 
-      
-
         <figure class="render-block">
           <div class="media-frame frame-render">
             <img src="mp8.jpg" alt="Vue de bureau type">
           </div>
           <figcaption class="caption right">Vue de bureau type</figcaption>
         </figure>
-
-      
       </div>
 
       <div></div>
