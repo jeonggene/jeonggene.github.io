@@ -1,116 +1,264 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>À travers les Paysages</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-      background: #F7F7F5;
-      color: #222;
-      padding: 60px 30px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>À travers les Paysages</title>
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+<style>
+:root {
+  --bg: #f3f3f1;
+  --text: #1f1f1f;
+  --muted: #7d7d7d;
+  --line: #bcbcbc;
+  --panel: #f8f8f6;
+}
 
-    .back {
-      font-size: 14px;
-      margin-bottom: 30px;
-      display: inline-block;
-      text-decoration: none;
-      color: #222;
-    }
+* { box-sizing: border-box; }
 
-    h1 {
-      font-size: 40px;
-      font-weight: 500;
-      margin-bottom: 12px;
-      letter-spacing: -0.5px;
-    }
+body {
+  margin: 0;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
 
-    h2 {
-      letter-spacing: -0.3px;
-    }
+.page {
+  max-width: 1380px;
+  margin: 0 auto;
+  padding: 34px 42px 80px;
+}
 
-    .subtitle {
-      font-size: 20px;
-      line-height: 1.5;
-      margin-bottom: 30px;
-    }
+.back {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  display: inline-block;
+  margin-bottom: 40px;
+}
 
-    .intro {
-      max-width: 720px;
-      margin-bottom: 60px;
-    }
+/* -------- LAYOUT -------- */
 
-    .intro p {
-      font-size: 17px;
-      line-height: 1.8;
-      margin-bottom: 20px;
-    }
+.spread { margin-bottom: 90px; }
 
-    .project-image {
-      width: 100%;
-      height: auto;
-      display: block;
-      margin: 0 0 40px 0;
-    }
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1.05fr;
+  gap: 70px;
+  min-height: 80vh;
+}
 
-    .section-title {
-      font-size: 22px;
-      font-weight: 500;
-      margin: 60px 0 20px 0;
-    }
-  </style>
+.hero-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.vol {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.title {
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 0.14em;
+  margin-bottom: 20px;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 60px;
+}
+
+.intro {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.intro p {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #666;
+  margin-bottom: 14px;
+  text-align: justify;
+}
+
+.hero-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.hero-line {
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+/* -------- MEDIA -------- */
+
+.media-frame {
+  background: var(--panel);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.frame-large { height: 620px; }
+.frame-medium { height: 500px; }
+.frame-wide { height: 320px; }
+
+.caption {
+  font-size: 11px;
+  color: #666;
+  margin-top: 6px;
+}
+
+.caption.right { text-align: right; }
+.caption.center { text-align: center; }
+
+/* -------- GRID -------- */
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+}
+
+.full {
+  width: 100%;
+}
+
+@media (max-width: 1000px) {
+  .hero, .two-col {
+    grid-template-columns: 1fr;
+  }
+
+  .frame-large,
+  .frame-medium,
+  .frame-wide {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
 
-    <a href="projects.html" class="back">← Retour aux projets</a>
+<div class="page">
 
-    <h1>À travers les Paysages</h1>
+<a href="projects.html" class="back">← RETOUR AUX PROJETS</a>
 
-    <p class="subtitle">
-      Projet d’urbanisme pour le site de l’ENCAN à Ciboure
-    </p>
+<!-- HERO -->
+<section class="spread hero">
 
-    <div class="intro">
-      <p>
-        Ce projet urbain s’inscrit dans une lecture attentive du territoire de Ciboure, de ses paysages,
-        de ses continuités et des usages qui structurent le site de l’ENCAN.
-      </p>
+<div class="hero-left">
 
-      <p>
-        Il propose une intervention à l’échelle du paysage, attentive aux relations entre sol, parcours,
-        espaces publics et implantation bâtie, afin de révéler les qualités existantes du site.
-      </p>
-    </div>
+<div class="vol">VOL.02</div>
 
-    <img src="atp1.jpg" class="project-image">
-    <img src="atp2.jpg" class="project-image">
-    <img src="atp3.jpg" class="project-image">
-    <img src="atp4.jpg" class="project-image">
+<h1 class="title">À Travers Les Paysages</h1>
 
-    <h2 class="section-title">Échelle territoriale et parcours</h2>
+<p class="subtitle">
+Projet d’urbanisme pour le site de l’ENCAN à Ciboure
+</p>
 
-    <div class="intro">
-      <p>
-        Le projet développe une réflexion sur les connexions, les vues, les séquences paysagères et la manière
-        dont une stratégie urbaine peut accompagner les transformations du site sans en effacer les spécificités.
-      </p>
-    </div>
+<div class="intro">
+<p>
+Située sur la côte basque, la ville de Ciboure se caractérise par la richesse et la diversité de ses paysages.
+Entre mer, rivière et reliefs, elle présente une forte identité territoriale.
+</p>
 
-    <img src="atp5.jpg" class="project-image">
-    <img src="atp6.jpg" class="project-image">
-    <img src="atp7.jpg" class="project-image">
-    <img src="atp8.jpg" class="project-image">
+<p>
+Le projet propose une relecture du site de l’ENCAN, en valorisant les continuités paysagères,
+les parcours et les relations entre espaces publics et habitat.
+</p>
 
-  </div>
+<p>
+Il s’agit d’inscrire une transformation urbaine sensible, capable de révéler les qualités existantes
+tout en accompagnant les usages contemporains.
+</p>
+</div>
+
+<div class="hero-footer">
+<div class="hero-line"></div>
+<div>Ciboure 2023</div>
+</div>
+
+</div>
+
+<div>
+<div class="media-frame frame-large">
+<img src="atp1.jpg">
+</div>
+<div class="caption right">Plan masse</div>
+</div>
+
+</section>
+
+<!-- SPREAD 2 -->
+<section class="spread two-col">
+
+<div>
+<div class="media-frame frame-medium">
+<img src="atp2.jpg">
+</div>
+<div class="caption">Ambiance du projet</div>
+</div>
+
+<div>
+<div class="media-frame frame-medium">
+<img src="atp3.jpg">
+</div>
+<div class="caption right">Plan RDC</div>
+</div>
+
+</section>
+
+<!-- SPREAD 3 -->
+<section class="spread full">
+
+<div class="media-frame frame-wide">
+<img src="atp4.jpg">
+</div>
+<div class="caption center">Coupe territoriale</div>
+
+</section>
+
+<!-- SPREAD 4 -->
+<section class="spread two-col">
+
+<div>
+<div class="media-frame frame-medium">
+<img src="atp5.jpg">
+</div>
+<div class="caption">Paysages à valoriser</div>
+</div>
+
+<div>
+<div class="media-frame frame-medium">
+<img src="atp6.jpg">
+</div>
+<div class="caption right">Vue territoire</div>
+</div>
+
+</section>
+
+</div>
+
 </body>
 </html>
