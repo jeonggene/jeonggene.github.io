@@ -71,6 +71,7 @@
       align-items: center;
       justify-content: center;
       perspective: 2200px;
+      padding: 72px 20px 92px;
     }
 
     /* Book: fixed A4 aspect ratio (portrait) */
@@ -82,6 +83,60 @@
       transform-style: preserve-3d;
       box-shadow: var(--page-shadow);
       background: #fff;
+      transition: width 0.45s ease, height 0.45s ease;
+    }
+
+    .book::before,
+    .book::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      z-index: 8;
+    }
+
+    .book::before {
+      width: 56px;
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0),
+        rgba(0,0,0,0.10) 20%,
+        rgba(0,0,0,0.18) 50%,
+        rgba(0,0,0,0.10) 80%,
+        rgba(0,0,0,0)
+      );
+      filter: blur(8px);
+    }
+
+    .book::after {
+      width: 2px;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.85),
+        rgba(120,120,120,0.35) 12%,
+        rgba(70,70,70,0.45) 50%,
+        rgba(120,120,120,0.35) 88%,
+        rgba(255,255,255,0.85)
+      );
+      box-shadow:
+        -12px 0 20px rgba(0,0,0,0.08),
+        12px 0 20px rgba(0,0,0,0.08);
+    }
+
+    .book.spread-mode {
+      width: min(76vh * 1.414, 94vw);
+      height: min(76vh, 94vw / 1.414);
+      max-width: 1180px;
+    }
+
+    .book.spread-mode::before,
+    .book.spread-mode::after {
+      opacity: 1;
     }
 
     /* A page in the book */
@@ -151,6 +206,24 @@
       backdrop-filter: blur(4px);
     }
 
+    .mobile-controls {
+      display: none;
+    }
+
+    .mobile-controls button {
+      border: 1px solid rgba(34,34,34,0.18);
+      background: rgba(255,255,255,0.92);
+      color: #222;
+      border-radius: 999px;
+      padding: 14px 20px;
+      min-width: 132px;
+      font-size: 14px;
+      letter-spacing: 0.08em;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+      backdrop-filter: blur(8px);
+      -webkit-tap-highlight-color: transparent;
+    }
+
     /* Hint (shown once) */
     .hint {
       position: fixed;
@@ -173,14 +246,70 @@
 
     /* Small screens */
     @media (max-width: 720px) {
+      html, body {
+        overflow: hidden;
+      }
+
+      .stage {
+        padding: 64px 10px 104px;
+      }
+
       .book {
         width: min(78vh * 0.707, 92vw);
         height: min(78vh, 92vw / 0.707);
       }
 
+      .book.spread-mode {
+        width: 96vw;
+        height: min(72vh, 96vw / 1.414);
+      }
+
+      .book::before {
+        width: 34px;
+        filter: blur(5px);
+      }
+
+      .book::after {
+        width: 1px;
+        box-shadow:
+          -7px 0 14px rgba(0,0,0,0.08),
+          7px 0 14px rgba(0,0,0,0.08);
+      }
+
       .zone .arrow { width: 44px; height: 44px; font-size: 28px; }
 
+      .zone {
+        width: 50vw;
+      }
+
       .topbar { padding: 12px 16px; }
+
+      .counter {
+        font-size: 12px;
+      }
+
+      .hint {
+        bottom: 76px;
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        text-align: center;
+        width: calc(100vw - 32px);
+      }
+
+      .mobile-controls {
+        position: fixed;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        z-index: 25;
+      }
+
+      .mobile-controls button:active {
+        transform: translateY(1px) scale(0.99);
+      }
     }
   </style>
 </head>
@@ -200,6 +329,11 @@
   </div>
   <div class="zone right" id="nextZone" aria-label="Page suivante">
     <div class="arrow">›</div>
+  </div>
+
+  <div class="mobile-controls" aria-label="Navigation mobile">
+    <button id="prevButton" type="button">← PRÉCÉDENT</button>
+    <button id="nextButton" type="button">SUIVANT →</button>
   </div>
 
   <div class="hint">← CLIQUEZ · UTILISEZ LES FLÈCHES · GLISSEZ →</div>
@@ -241,6 +375,11 @@
 
     let current = 0; // index of the top (front) page
 
+    function syncBookMode() {
+      if (current === 0) book.classList.remove("spread-mode");
+      else book.classList.add("spread-mode");
+    }
+
     function updateCounter() {
       counter.textContent = (current + 1) + " / " + TOTAL_PAGES;
     }
@@ -252,6 +391,7 @@
       p.classList.add("flipped");
       setTimeout(() => p.classList.remove("flipping"), 900);
       current++;
+      syncBookMode();
       updateCounter();
     }
 
@@ -262,11 +402,14 @@
       p.classList.add("flipping");
       p.classList.remove("flipped");
       setTimeout(() => p.classList.remove("flipping"), 900);
+      syncBookMode();
       updateCounter();
     }
 
     document.getElementById("nextZone").addEventListener("click", next);
     document.getElementById("prevZone").addEventListener("click", prev);
+    document.getElementById("nextButton").addEventListener("click", next);
+    document.getElementById("prevButton").addEventListener("click", prev);
 
     // Keyboard
     document.addEventListener("keydown", (e) => {
@@ -278,18 +421,24 @@
 
     // Touch / swipe
     let touchStartX = null;
+    let touchStartY = null;
     document.addEventListener("touchstart", (e) => {
       touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
     }, { passive: true });
     document.addEventListener("touchend", (e) => {
       if (touchStartX === null) return;
       const dx = e.changedTouches[0].screenX - touchStartX;
-      if (Math.abs(dx) > 40) {
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      const threshold = window.innerWidth <= 720 ? 24 : 40;
+      if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy) * 1.15) {
         if (dx < 0) next(); else prev();
       }
       touchStartX = null;
+      touchStartY = null;
     });
 
+    syncBookMode();
     updateCounter();
   </script>
 
