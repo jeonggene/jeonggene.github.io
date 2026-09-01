@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Gene JEONG</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L72KGY0LK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3L72KGY0LK');
+  </script>
+
+  <style>
+    :root {
+      --bg: #FAFAFA;
+      --ink: #222;
+      --muted: #9a9a9a;
+      --page-bg: #ffffff;
+      --page-shadow: 0 20px 60px rgba(0,0,0,0.18), 0 4px 14px rgba(0,0,0,0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      background-image: url("https://www.transparenttextures.com/patterns/white-paper.png");
+      color: var(--ink);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Top bar */
+    .topbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 24px;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .topbar a, .topbar .counter {
+      pointer-events: auto;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: #444;
+      text-decoration: none;
+    }
+
+    .counter {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Stage */
+    .stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 2200px;
+    }
+
+    /* Book: fixed A4 aspect ratio (portrait) */
+    .book {
+      position: relative;
+      width: min(70vh * 0.707, 88vw);
+      height: min(70vh, 88vw / 0.707);
+      max-width: 640px;
+      transform-style: preserve-3d;
+      box-shadow: var(--page-shadow);
+      background: #fff;
+    }
+
+    /* A page in the book */
+    .page {
+      position: absolute;
+      inset: 0;
+      background: var(--page-bg);
+      backface-visibility: hidden;
+      overflow: hidden;
+      transform-origin: left center;
+      transform: rotateY(0deg);
+      transition: transform 0.9s cubic-bezier(.4,.15,.25,1);
+      will-change: transform;
+    }
+
+    /* Only the flipping page gets its own shadow to fake depth */
+    .page.flipping {
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    .page img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: contain;
+      background: #fff;
+      user-select: none;
+      -webkit-user-drag: none;
+      pointer-events: none;
+    }
+
+    /* Layering */
+    .page.flipped {
+      transform: rotateY(-180deg);
+    }
+
+    /* Click zones (invisible) */
+    .zone {
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      width: 40vw;
+      z-index: 15;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .zone.left  { left: 0;  }
+    .zone.right { right: 0; }
+
+    .zone:hover { opacity: 1; }
+
+    .zone .arrow {
+      font-size: 34px;
+      color: #444;
+      background: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    /* Hint (shown once) */
+    .hint {
+      position: fixed;
+      left: 50%;
+      bottom: 24px;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      z-index: 20;
+      opacity: 0.9;
+      animation: fadeOut 5s ease forwards;
+      animation-delay: 4s;
+      pointer-events: none;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+
+    /* Small screens */
+    @media (max-width: 720px) {
+      .book {
+        width: min(78vh * 0.707, 92vw);
+        height: min(78vh, 92vw / 0.707);
+      }
+
+      .zone .arrow { width: 44px; height: 44px; font-size: 28px; }
+
+      .topbar { padding: 12px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <a href="index.html">← Retour</a>
+    <span class="counter" id="counter">1 / 21</span>
+  </div>
+
+  <div class="stage">
+    <div class="book" id="book"></div>
+  </div>
+
+  <div class="zone left"  id="prevZone" aria-label="Page précédente">
+    <div class="arrow">‹</div>
+  </div>
+  <div class="zone right" id="nextZone" aria-label="Page suivante">
+    <div class="arrow">›</div>
+  </div>
+
+  <div class="hint">← CLIQUEZ · UTILISEZ LES FLÈCHES · GLISSEZ →</div>
+
+  <script>
+    /* ==============================================================
+       ⚙️  EASY UPDATE
+       페이지를 추가/변경하고 싶으면 아래 TOTAL_PAGES 숫자만 바꾸면 됩니다.
+       파일 이름은 반드시 pages/page-01.jpg, page-02.jpg, ... 형식.
+       (01, 02 처럼 두 자리 숫자로 저장하세요.)
+       ============================================================== */
+    const TOTAL_PAGES = 21;
+    const FOLDER = "pages/";
+    const EXT = ".jpg";
+
+    /* ============================================================== */
+
+    const book = document.getElementById("book");
+    const counter = document.getElementById("counter");
+
+    // Build pages (page 1 at top of stack; last page at bottom)
+    // We stack them so higher index = further behind.
+    const pages = [];
+    for (let i = 1; i <= TOTAL_PAGES; i++) {
+      const p = document.createElement("div");
+      p.className = "page";
+      p.style.zIndex = (TOTAL_PAGES - i + 1);
+
+      const img = document.createElement("img");
+      img.src = FOLDER + String(i).padStart(2, "0") + EXT;
+      img.alt = "Portfolio page " + i;
+      img.loading = (i <= 3) ? "eager" : "lazy";
+
+      p.appendChild(img);
+      book.appendChild(p);
+      pages.push(p);
+    }
+
+    let current = 0; // index of the top (front) page
+
+    function updateCounter() {
+      counter.textContent = (current + 1) + " / " + TOTAL_PAGES;
+    }
+
+    function next() {
+      if (current >= TOTAL_PAGES - 1) return;
+      const p = pages[current];
+      p.classList.add("flipping");
+      p.classList.add("flipped");
+      setTimeout(() => p.classList.remove("flipping"), 900);
+      current++;
+      updateCounter();
+    }
+
+    function prev() {
+      if (current <= 0) return;
+      current--;
+      const p = pages[current];
+      p.classList.add("flipping");
+      p.classList.remove("flipped");
+      setTimeout(() => p.classList.remove("flipping"), 900);
+      updateCounter();
+    }
+
+    document.getElementById("nextZone").addEventListener("click", next);
+    document.getElementById("prevZone").addEventListener("click", prev);
+
+    // Keyboard
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") { next(); e.preventDefault(); }
+      else if (e.key === "ArrowLeft" || e.key === "PageUp") { prev(); e.preventDefault(); }
+      else if (e.key === "Home") { while (current > 0) prev(); }
+      else if (e.key === "End")  { while (current < TOTAL_PAGES - 1) next(); }
+    });
+
+    // Touch / swipe
+    let touchStartX = null;
+    document.addEventListener("touchstart", (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    }, { passive: true });
+    document.addEventListener("touchend", (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      if (Math.abs(dx) > 40) {
+        if (dx < 0) next(); else prev();
+      }
+      touchStartX = null;
+    });
+
+    updateCounter();
+  </script>
+
+</body>
+</html>
