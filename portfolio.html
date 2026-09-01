@@ -17,7 +17,7 @@
       --ink: #222;
       --muted: #8c8c8c;
       --paper: #fff;
-      --shadow: 0 24px 80px rgba(0,0,0,0.16), 0 8px 22px rgba(0,0,0,0.08);
+      --shadow: 0 26px 80px rgba(0,0,0,0.16), 0 8px 22px rgba(0,0,0,0.08);
     }
     * { box-sizing: border-box; }
     html, body {
@@ -35,9 +35,7 @@
     }
     .topbar {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       z-index: 50;
       display: flex;
       align-items: center;
@@ -52,92 +50,143 @@
       letter-spacing: 0.08em;
       color: #444;
     }
-    .meta {
-      display: flex;
-      gap: 14px;
-      align-items: center;
-      color: var(--muted);
-      font-variant-numeric: tabular-nums;
-    }
+    .meta { color: var(--muted); font-variant-numeric: tabular-nums; }
     .stage {
       position: fixed;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 72px 24px 96px;
+      padding: 72px 18px 102px;
+      perspective: 2600px;
     }
-    .flipbook-shell {
+    .book {
       position: relative;
-      width: min(94vw, calc((100vh - 170px) * 1.414));
-      height: min(78vh, calc((100vw - 48px) / 1.414));
+      filter: drop-shadow(var(--shadow));
+      transition: width .35s ease, height .35s ease;
+      user-select: none;
+    }
+    .book.cover-mode {
+      width: min(88vw, calc((100vh - 180px) * 0.707));
+      height: min(78vh, calc((100vw - 36px) / 0.707));
+      max-width: 595px;
+      max-height: 842px;
+    }
+    .book.spread-mode {
+      width: min(94vw, calc((100vh - 190px) * 1.414));
+      height: min(76vh, calc((100vw - 36px) / 1.414));
       max-width: 1190px;
       max-height: 842px;
-      filter: drop-shadow(0 26px 48px rgba(0,0,0,0.15));
     }
-    .flipbook-shell.spread::before {
-      content: "";
+    .cover-frame,
+    .spread-frame {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 54px;
-      background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.13) 20%, rgba(0,0,0,0.22) 50%, rgba(0,0,0,0.13) 80%, rgba(0,0,0,0));
-      filter: blur(9px);
-      z-index: 30;
-      pointer-events: none;
-      opacity: 0.9;
+      inset: 0;
     }
-    .flipbook-shell.spread::after {
-      content: "";
+    .hidden { display: none !important; }
+    .sheet {
       position: absolute;
-      top: 0;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 1px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(80,80,80,0.38) 12%, rgba(55,55,55,0.5) 50%, rgba(80,80,80,0.38) 88%, rgba(255,255,255,0.9));
-      box-shadow: -9px 0 18px rgba(0,0,0,0.08), 9px 0 18px rgba(0,0,0,0.08);
-      z-index: 31;
-      pointer-events: none;
-    }
-    #flipbook {
-      width: 100%;
-      height: 100%;
-      background: transparent;
-    }
-    .page {
+      top: 0; bottom: 0;
       background: var(--paper);
       overflow: hidden;
+      backface-visibility: hidden;
     }
-    .page img {
+    .sheet img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: cover;
       background: #fff;
-      user-select: none;
-      -webkit-user-drag: none;
       pointer-events: none;
+      -webkit-user-drag: none;
+    }
+    .cover-sheet {
+      inset: 0;
+      box-shadow: var(--shadow);
+    }
+    .left-page, .right-page {
+      width: 50%;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+    }
+    .left-page { left: 0; }
+    .right-page { right: 0; }
+    .spread-frame::before {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 54px;
+      background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.12) 80%, rgba(0,0,0,0));
+      filter: blur(9px);
+      z-index: 8;
+      pointer-events: none;
+    }
+    .spread-frame::after {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(80,80,80,0.38) 10%, rgba(55,55,55,0.5) 50%, rgba(80,80,80,0.38) 90%, rgba(255,255,255,0.95));
+      box-shadow: -9px 0 18px rgba(0,0,0,0.08), 9px 0 18px rgba(0,0,0,0.08);
+      z-index: 9;
+      pointer-events: none;
+    }
+    .flip-layer {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      display: none;
+    }
+    .flip-layer.active { display: block; }
+    .flip-layer.next { right: 0; transform-origin: left center; }
+    .flip-layer.prev { left: 0; transform-origin: right center; }
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+      backface-visibility: hidden;
+      overflow: hidden;
+      box-shadow: 0 18px 36px rgba(0,0,0,0.18);
+    }
+    .flip-face img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      pointer-events: none;
+    }
+    .flip-face.back { transform: rotateY(180deg); }
+    .flip-layer.next.active { animation: flipNext 0.9s cubic-bezier(.45,.08,.2,1) forwards; }
+    .flip-layer.prev.active { animation: flipPrev 0.9s cubic-bezier(.45,.08,.2,1) forwards; }
+    @keyframes flipNext {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(-180deg); }
+    }
+    @keyframes flipPrev {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(180deg); }
     }
     .desktop-zones {
       position: fixed;
       inset: 0;
-      z-index: 20;
+      z-index: 30;
       pointer-events: none;
     }
     .zone {
       position: absolute;
-      top: 0;
-      bottom: 0;
+      top: 0; bottom: 0;
       width: 28vw;
       min-width: 120px;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
-      transition: opacity 0.2s ease;
+      transition: opacity .2s ease;
       pointer-events: auto;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
@@ -146,15 +195,11 @@
     .zone.left { left: 0; }
     .zone.right { right: 0; }
     .zone span {
-      width: 56px;
-      height: 56px;
+      width: 56px; height: 56px;
       border-radius: 999px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-      color: #444;
-      background: rgba(255,255,255,0.75);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 34px; color: #444;
+      background: rgba(255,255,255,0.78);
       backdrop-filter: blur(6px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
@@ -173,13 +218,10 @@
       box-shadow: 0 10px 26px rgba(0,0,0,0.10);
       -webkit-tap-highlight-color: transparent;
     }
-    .mobile-controls button:active {
-      transform: translateY(1px) scale(0.99);
-    }
+    .mobile-controls button:active { transform: translateY(1px) scale(0.99); }
     .hint {
       position: fixed;
-      left: 50%;
-      bottom: 24px;
+      left: 50%; bottom: 24px;
       transform: translateX(-50%);
       z-index: 40;
       font-size: 12px;
@@ -192,18 +234,28 @@
     @keyframes fadeOut { to { opacity: 0; } }
     @media (max-width: 900px) {
       .stage { padding: 68px 10px 112px; }
-      .flipbook-shell {
-        width: min(94vw, calc((100vh - 180px) * 0.707));
+      .book.cover-mode,
+      .book.spread-mode {
+        width: min(94vw, calc((100vh - 190px) * 0.707));
         height: min(76vh, calc((100vw - 20px) / 0.707));
         max-width: 595px;
         max-height: 842px;
       }
+      .spread-frame::before, .spread-frame::after { display: none; }
+      .left-page, .right-page, .flip-layer { width: 100%; left: 0; right: auto; }
+      .right-page { display: none; }
+      .flip-layer.next, .flip-layer.prev { left: 0; transform-origin: center center; }
+      .flip-layer.next.active { animation: fadeSwap .5s ease forwards; }
+      .flip-layer.prev.active { animation: fadeSwap .5s ease forwards; }
+      @keyframes fadeSwap {
+        from { opacity: 0.96; transform: translateX(0); }
+        50%  { opacity: 0.7; }
+        to   { opacity: 0; transform: translateX(0); }
+      }
       .desktop-zones .zone { width: 36vw; }
       .mobile-controls {
         position: fixed;
-        left: 14px;
-        right: 14px;
-        bottom: 16px;
+        left: 14px; right: 14px; bottom: 16px;
         display: flex;
         justify-content: space-between;
         gap: 12px;
@@ -215,10 +267,7 @@
         text-align: center;
         font-size: 11px;
       }
-      .flipbook-shell.spread::before { width: 30px; filter: blur(6px); }
-      .flipbook-shell.spread::after { box-shadow: -6px 0 12px rgba(0,0,0,0.07), 6px 0 12px rgba(0,0,0,0.07); }
       .zone span { width: 44px; height: 44px; font-size: 28px; }
-      .meta { gap: 8px; font-size: 12px; }
       .topbar { padding: 12px 14px; }
     }
   </style>
@@ -226,14 +275,29 @@
 <body>
   <div class="topbar">
     <a href="index.html">← Retour</a>
-    <div class="meta">
-      <span id="pageCounter">1 / 41</span>
-    </div>
+    <div class="meta"><span id="pageCounter">1 / 41</span></div>
   </div>
 
   <div class="stage">
-    <div class="flipbook-shell" id="shell">
-      <div id="flipbook"></div>
+    <div class="book cover-mode" id="book">
+      <div class="cover-frame" id="coverFrame">
+        <div class="sheet cover-sheet"><img id="coverImg" alt="Portfolio cover"></div>
+      </div>
+
+      <div class="spread-frame hidden" id="spreadFrame">
+        <div class="sheet left-page"><img id="leftImg" alt="Left page"></div>
+        <div class="sheet right-page"><img id="rightImg" alt="Right page"></div>
+
+        <div class="flip-layer next" id="flipNextLayer">
+          <div class="flip-face front"><img id="flipNextFront" alt="Turning front page"></div>
+          <div class="flip-face back"><img id="flipNextBack" alt="Turning back page"></div>
+        </div>
+
+        <div class="flip-layer prev" id="flipPrevLayer">
+          <div class="flip-face front"><img id="flipPrevFront" alt="Turning previous page"></div>
+          <div class="flip-face back"><img id="flipPrevBack" alt="Turning previous back page"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -249,7 +313,6 @@
 
   <div class="hint">← CLIQUEZ · GLISSEZ · FLÈCHES CLAVIER →</div>
 
-  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
   <script>
     /* ==============================================================
        EASY UPDATE
@@ -262,81 +325,140 @@
     const EXT = '.jpg';
     /* ============================================================== */
 
-    const flipbookEl = document.getElementById('flipbook');
-    const shell = document.getElementById('shell');
+    const book = document.getElementById('book');
+    const coverFrame = document.getElementById('coverFrame');
+    const spreadFrame = document.getElementById('spreadFrame');
+    const coverImg = document.getElementById('coverImg');
+    const leftImg = document.getElementById('leftImg');
+    const rightImg = document.getElementById('rightImg');
     const pageCounter = document.getElementById('pageCounter');
-    const DESKTOP_BREAKPOINT = 900;
-    let pageFlip = null;
-    let currentIndex = 0;
-    let portraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
+    const flipNextLayer = document.getElementById('flipNextLayer');
+    const flipPrevLayer = document.getElementById('flipPrevLayer');
+    const flipNextFront = document.getElementById('flipNextFront');
+    const flipNextBack = document.getElementById('flipNextBack');
+    const flipPrevFront = document.getElementById('flipPrevFront');
+    const flipPrevBack = document.getElementById('flipPrevBack');
 
-    function buildPages() {
-      flipbookEl.innerHTML = '';
-      const items = [];
-      for (let i = 1; i <= TOTAL_PAGES; i++) {
-        const page = document.createElement('div');
-        page.className = 'page';
-        const img = document.createElement('img');
-        img.alt = 'Portfolio page ' + i;
-        img.src = FOLDER + PREFIX + String(i).padStart(2, '0') + EXT;
-        page.appendChild(img);
-        flipbookEl.appendChild(page);
-        items.push(page);
+    let currentLeft = 1;
+    let isAnimating = false;
+
+    function pageSrc(n) {
+      return FOLDER + PREFIX + String(n).padStart(2, '0') + EXT;
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 900;
+    }
+
+    function hasSpread() {
+      return !isMobile() && currentLeft >= 2;
+    }
+
+    function setCounter() {
+      if (currentLeft === 1 || isMobile()) {
+        pageCounter.textContent = currentLeft + ' / ' + TOTAL_PAGES;
+      } else {
+        const right = Math.min(currentLeft + 1, TOTAL_PAGES);
+        pageCounter.textContent = currentLeft + '–' + right + ' / ' + TOTAL_PAGES;
       }
-      return items;
     }
 
-    function counterLabel(index, orientation) {
-      if (orientation === 'landscape' && index > 0) {
-        const left = index + 1;
-        const right = Math.min(index + 2, TOTAL_PAGES);
-        return left + '–' + right + ' / ' + TOTAL_PAGES;
+    function render() {
+      coverImg.src = pageSrc(currentLeft);
+      if (currentLeft === 1 || isMobile()) {
+        book.classList.remove('spread-mode');
+        book.classList.add('cover-mode');
+        coverFrame.classList.remove('hidden');
+        spreadFrame.classList.add('hidden');
+      } else {
+        book.classList.remove('cover-mode');
+        book.classList.add('spread-mode');
+        coverFrame.classList.add('hidden');
+        spreadFrame.classList.remove('hidden');
+        leftImg.src = pageSrc(currentLeft);
+        rightImg.src = pageSrc(Math.min(currentLeft + 1, TOTAL_PAGES));
       }
-      return (index + 1) + ' / ' + TOTAL_PAGES;
+      setCounter();
     }
 
-    function updateUI() {
-      if (!pageFlip) return;
-      const index = pageFlip.getCurrentPageIndex();
-      const orientation = pageFlip.getOrientation();
-      currentIndex = index;
-      pageCounter.textContent = counterLabel(index, orientation);
-      if (orientation === 'landscape' && index > 0) shell.classList.add('spread');
-      else shell.classList.remove('spread');
+    function nextTarget() {
+      if (currentLeft === 1) return 2;
+      return currentLeft + 2 <= TOTAL_PAGES ? currentLeft + 2 : currentLeft;
     }
 
-    function createFlipbook(startIndex = 0) {
-      portraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
-      if (pageFlip) pageFlip.destroy();
-      const items = buildPages();
-      pageFlip = new St.PageFlip(flipbookEl, {
-        width: 595,
-        height: 842,
-        size: 'stretch',
-        minWidth: 280,
-        maxWidth: 1200,
-        minHeight: 396,
-        maxHeight: 1700,
-        maxShadowOpacity: 0.34,
-        showCover: true,
-        mobileScrollSupport: false,
-        useMouseEvents: true,
-        swipeDistance: 24,
-        usePortrait: portraitMode,
-        startZIndex: 10,
-        autoSize: true,
-        drawShadow: true,
-        flippingTime: 900
-      });
-      pageFlip.loadFromHTML(items);
-      pageFlip.on('flip', updateUI);
-      pageFlip.on('changeOrientation', updateUI);
-      if (startIndex > 0) pageFlip.turnToPage(startIndex);
-      setTimeout(updateUI, 120);
+    function prevTarget() {
+      if (currentLeft <= 1) return 1;
+      if (currentLeft === 2) return 1;
+      return Math.max(2, currentLeft - 2);
     }
 
-    const next = () => pageFlip && pageFlip.flipNext();
-    const prev = () => pageFlip && pageFlip.flipPrev();
+    function animateNextDesktop(targetLeft) {
+      flipNextFront.src = pageSrc(currentLeft + 1);
+      flipNextBack.src = pageSrc(targetLeft);
+      flipNextLayer.classList.remove('active');
+      void flipNextLayer.offsetWidth;
+      flipNextLayer.classList.add('active');
+      setTimeout(() => {
+        flipNextLayer.classList.remove('active');
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+      }, 900);
+    }
+
+    function animatePrevDesktop(targetLeft) {
+      flipPrevFront.src = pageSrc(currentLeft);
+      flipPrevBack.src = pageSrc(targetLeft + 1);
+      flipPrevLayer.classList.remove('active');
+      void flipPrevLayer.offsetWidth;
+      flipPrevLayer.classList.add('active');
+      setTimeout(() => {
+        flipPrevLayer.classList.remove('active');
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+      }, 900);
+    }
+
+    function next() {
+      if (isAnimating) return;
+      const targetLeft = nextTarget();
+      if (targetLeft === currentLeft) return;
+      isAnimating = true;
+      if (isMobile()) {
+        currentLeft = currentLeft === 1 ? 2 : Math.min(currentLeft + 1, TOTAL_PAGES);
+        render();
+        isAnimating = false;
+        return;
+      }
+      if (currentLeft === 1) {
+        currentLeft = 2;
+        render();
+        isAnimating = false;
+        return;
+      }
+      animateNextDesktop(targetLeft);
+    }
+
+    function prev() {
+      if (isAnimating) return;
+      const targetLeft = prevTarget();
+      if (targetLeft === currentLeft) return;
+      isAnimating = true;
+      if (isMobile()) {
+        currentLeft = Math.max(1, currentLeft - 1);
+        render();
+        isAnimating = false;
+        return;
+      }
+      if (currentLeft === 2) {
+        currentLeft = 1;
+        render();
+        isAnimating = false;
+        return;
+      }
+      animatePrevDesktop(targetLeft);
+    }
 
     document.getElementById('nextZone').addEventListener('click', next);
     document.getElementById('prevZone').addEventListener('click', prev);
@@ -348,17 +470,37 @@
       else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
     });
 
+    let touchStartX = null;
+    let touchStartY = null;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+    document.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      const threshold = isMobile() ? 24 : 42;
+      if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy) * 1.15) {
+        if (dx < 0) next(); else prev();
+      }
+      touchStartX = null;
+      touchStartY = null;
+    }, { passive: true });
+
     let resizeTimer = null;
     window.addEventListener('resize', () => {
       clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => {
-        const newPortraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
-        if (newPortraitMode !== portraitMode) createFlipbook(currentIndex);
-        else updateUI();
-      }, 140);
+      resizeTimer = setTimeout(render, 120);
     });
 
-    createFlipbook(0);
+    // preload
+    for (let i = 1; i <= TOTAL_PAGES; i++) {
+      const img = new Image();
+      img.src = pageSrc(i);
+    }
+
+    render();
   </script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
