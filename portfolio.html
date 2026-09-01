@@ -69,6 +69,10 @@
     }
     .flipbook-shell {
       position: relative;
+      width: min(94vw, calc((100vh - 170px) * 1.414));
+      height: min(78vh, calc((100vw - 48px) / 1.414));
+      max-width: 1190px;
+      max-height: 842px;
       filter: drop-shadow(0 26px 48px rgba(0,0,0,0.15));
     }
     .flipbook-shell.spread::before {
@@ -99,6 +103,8 @@
       pointer-events: none;
     }
     #flipbook {
+      width: 100%;
+      height: 100%;
       background: transparent;
     }
     .page {
@@ -186,6 +192,12 @@
     @keyframes fadeOut { to { opacity: 0; } }
     @media (max-width: 900px) {
       .stage { padding: 68px 10px 112px; }
+      .flipbook-shell {
+        width: min(94vw, calc((100vh - 180px) * 0.707));
+        height: min(76vh, calc((100vw - 20px) / 0.707));
+        max-width: 595px;
+        max-height: 842px;
+      }
       .desktop-zones .zone { width: 36vw; }
       .mobile-controls {
         position: fixed;
@@ -253,56 +265,78 @@
     const flipbookEl = document.getElementById('flipbook');
     const shell = document.getElementById('shell');
     const pageCounter = document.getElementById('pageCounter');
+    const DESKTOP_BREAKPOINT = 900;
+    let pageFlip = null;
+    let currentIndex = 0;
+    let portraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
 
-    const items = [];
-    for (let i = 1; i <= TOTAL_PAGES; i++) {
-      const page = document.createElement('div');
-      page.className = 'page';
-      const img = document.createElement('img');
-      img.alt = 'Portfolio page ' + i;
-      img.src = FOLDER + PREFIX + String(i).padStart(2, '0') + EXT;
-      page.appendChild(img);
-      flipbookEl.appendChild(page);
-      items.push(page);
+    function buildPages() {
+      flipbookEl.innerHTML = '';
+      const items = [];
+      for (let i = 1; i <= TOTAL_PAGES; i++) {
+        const page = document.createElement('div');
+        page.className = 'page';
+        const img = document.createElement('img');
+        img.alt = 'Portfolio page ' + i;
+        img.src = FOLDER + PREFIX + String(i).padStart(2, '0') + EXT;
+        page.appendChild(img);
+        flipbookEl.appendChild(page);
+        items.push(page);
+      }
+      return items;
     }
 
-    const pageFlip = new St.PageFlip(flipbookEl, {
-      width: 595,
-      height: 842,
-      size: 'stretch',
-      minWidth: 280,
-      maxWidth: 1200,
-      minHeight: 396,
-      maxHeight: 1700,
-      maxShadowOpacity: 0.34,
-      showCover: true,
-      mobileScrollSupport: false,
-      useMouseEvents: true,
-      swipeDistance: 24,
-      usePortrait: true,
-      startZIndex: 10,
-      autoSize: true,
-      drawShadow: true,
-      flippingTime: 900
-    });
-
-    pageFlip.loadFromHTML(items);
+    function counterLabel(index, orientation) {
+      if (orientation === 'landscape' && index > 0) {
+        const left = index + 1;
+        const right = Math.min(index + 2, TOTAL_PAGES);
+        return left + '–' + right + ' / ' + TOTAL_PAGES;
+      }
+      return (index + 1) + ' / ' + TOTAL_PAGES;
+    }
 
     function updateUI() {
-      const index = pageFlip.getCurrentPageIndex() + 1;
+      if (!pageFlip) return;
+      const index = pageFlip.getCurrentPageIndex();
       const orientation = pageFlip.getOrientation();
-      pageCounter.textContent = index + ' / ' + TOTAL_PAGES;
-      if (orientation === 'landscape' && index > 1) shell.classList.add('spread');
+      currentIndex = index;
+      pageCounter.textContent = counterLabel(index, orientation);
+      if (orientation === 'landscape' && index > 0) shell.classList.add('spread');
       else shell.classList.remove('spread');
     }
 
-    pageFlip.on('flip', updateUI);
-    pageFlip.on('changeOrientation', updateUI);
-    window.addEventListener('resize', updateUI);
-    setTimeout(updateUI, 100);
+    function createFlipbook(startIndex = 0) {
+      portraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
+      if (pageFlip) pageFlip.destroy();
+      const items = buildPages();
+      pageFlip = new St.PageFlip(flipbookEl, {
+        width: 595,
+        height: 842,
+        size: 'stretch',
+        minWidth: 280,
+        maxWidth: 1200,
+        minHeight: 396,
+        maxHeight: 1700,
+        maxShadowOpacity: 0.34,
+        showCover: true,
+        mobileScrollSupport: false,
+        useMouseEvents: true,
+        swipeDistance: 24,
+        usePortrait: portraitMode,
+        startZIndex: 10,
+        autoSize: true,
+        drawShadow: true,
+        flippingTime: 900
+      });
+      pageFlip.loadFromHTML(items);
+      pageFlip.on('flip', updateUI);
+      pageFlip.on('changeOrientation', updateUI);
+      if (startIndex > 0) pageFlip.turnToPage(startIndex);
+      setTimeout(updateUI, 120);
+    }
 
-    const next = () => pageFlip.flipNext();
-    const prev = () => pageFlip.flipPrev();
+    const next = () => pageFlip && pageFlip.flipNext();
+    const prev = () => pageFlip && pageFlip.flipPrev();
 
     document.getElementById('nextZone').addEventListener('click', next);
     document.getElementById('prevZone').addEventListener('click', prev);
@@ -313,6 +347,19 @@
       if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
       else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
     });
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const newPortraitMode = window.innerWidth <= DESKTOP_BREAKPOINT;
+        if (newPortraitMode !== portraitMode) createFlipbook(currentIndex);
+        else updateUI();
+      }, 140);
+    });
+
+    createFlipbook(0);
   </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
 </body>
 </html>
