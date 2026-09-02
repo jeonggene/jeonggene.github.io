@@ -1,9 +1,11 @@
+```html
 <!doctype html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Portfolio — Gene JEONG</title>
+
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L72KGY0LK"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -11,6 +13,7 @@
     gtag('js', new Date());
     gtag('config', 'G-3L72KGY0LK');
   </script>
+
   <style>
     :root {
       --bg: #f6f5f1;
@@ -19,7 +22,9 @@
       --paper: #fff;
       --shadow: 0 26px 80px rgba(0,0,0,0.16), 0 8px 22px rgba(0,0,0,0.08);
     }
+
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       width: 100%;
@@ -33,9 +38,12 @@
       text-rendering: optimizeLegibility;
       touch-action: manipulation;
     }
+
     .topbar {
       position: fixed;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       z-index: 50;
       display: flex;
       align-items: center;
@@ -43,14 +51,21 @@
       padding: 18px 24px;
       pointer-events: none;
     }
-    .topbar a, .topbar .meta {
+
+    .topbar a,
+    .topbar .meta {
       pointer-events: auto;
       text-decoration: none;
       font-size: 13px;
       letter-spacing: 0.08em;
       color: #444;
     }
-    .meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+
+    .meta {
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+
     .stage {
       position: fixed;
       inset: 0;
@@ -60,37 +75,49 @@
       padding: 72px 18px 102px;
       perspective: 2600px;
     }
+
     .book {
       position: relative;
       filter: drop-shadow(var(--shadow));
       transition: width .35s ease, height .35s ease;
       user-select: none;
     }
-    .book.cover-mode {
+
+    /* A4 단독 페이지 */
+    .book.single-mode {
       width: min(88vw, calc((100vh - 180px) * 0.707));
       height: min(78vh, calc((100vw - 36px) / 0.707));
       max-width: 595px;
       max-height: 842px;
     }
+
+    /* 데스크톱 펼침 */
     .book.spread-mode {
       width: min(94vw, calc((100vh - 190px) * 1.414));
       height: min(76vh, calc((100vw - 36px) / 1.414));
       max-width: 1190px;
       max-height: 842px;
     }
-    .cover-frame,
+
+    .single-frame,
     .spread-frame {
       position: absolute;
       inset: 0;
     }
-    .hidden { display: none !important; }
+
+    .hidden {
+      display: none !important;
+    }
+
     .sheet {
       position: absolute;
-      top: 0; bottom: 0;
+      top: 0;
+      bottom: 0;
       background: var(--paper);
       overflow: hidden;
       backface-visibility: hidden;
     }
+
     .sheet img {
       display: block;
       width: 100%;
@@ -100,38 +127,70 @@
       pointer-events: none;
       -webkit-user-drag: none;
     }
-    .cover-sheet {
+
+    .single-sheet {
       inset: 0;
       box-shadow: var(--shadow);
     }
-    .left-page, .right-page {
+
+    .left-page,
+    .right-page {
       width: 50%;
       box-shadow: 0 14px 32px rgba(0,0,0,0.08);
     }
-    .left-page { left: 0; }
-    .right-page { right: 0; }
+
+    .left-page {
+      left: 0;
+    }
+
+    .right-page {
+      right: 0;
+    }
+
     .spread-frame::before {
       content: "";
       position: absolute;
-      top: 0; bottom: 0; left: 50%;
+      top: 0;
+      bottom: 0;
+      left: 50%;
       transform: translateX(-50%);
       width: 54px;
-      background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.12) 20%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.12) 80%, rgba(0,0,0,0));
+      background: linear-gradient(
+        to right,
+        rgba(0,0,0,0),
+        rgba(0,0,0,0.12) 20%,
+        rgba(0,0,0,0.2) 50%,
+        rgba(0,0,0,0.12) 80%,
+        rgba(0,0,0,0)
+      );
       filter: blur(9px);
       z-index: 8;
       pointer-events: none;
     }
+
     .spread-frame::after {
       content: "";
       position: absolute;
-      top: 0; bottom: 0; left: 50%;
+      top: 0;
+      bottom: 0;
+      left: 50%;
       transform: translateX(-50%);
       width: 1px;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(80,80,80,0.38) 10%, rgba(55,55,55,0.5) 50%, rgba(80,80,80,0.38) 90%, rgba(255,255,255,0.95));
-      box-shadow: -9px 0 18px rgba(0,0,0,0.08), 9px 0 18px rgba(0,0,0,0.08);
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.95),
+        rgba(80,80,80,0.38) 10%,
+        rgba(55,55,55,0.5) 50%,
+        rgba(80,80,80,0.38) 90%,
+        rgba(255,255,255,0.95)
+      );
+      box-shadow:
+        -9px 0 18px rgba(0,0,0,0.08),
+        9px 0 18px rgba(0,0,0,0.08);
       z-index: 9;
       pointer-events: none;
     }
+
     .flip-layer {
       position: absolute;
       top: 0;
@@ -142,9 +201,21 @@
       transform-style: preserve-3d;
       display: none;
     }
-    .flip-layer.active { display: block; }
-    .flip-layer.next { right: 0; transform-origin: left center; }
-    .flip-layer.prev { left: 0; transform-origin: right center; }
+
+    .flip-layer.active {
+      display: block;
+    }
+
+    .flip-layer.next {
+      right: 0;
+      transform-origin: left center;
+    }
+
+    .flip-layer.prev {
+      left: 0;
+      transform-origin: right center;
+    }
+
     .flip-face {
       position: absolute;
       inset: 0;
@@ -153,6 +224,7 @@
       overflow: hidden;
       box-shadow: 0 18px 36px rgba(0,0,0,0.18);
     }
+
     .flip-face img {
       width: 100%;
       height: 100%;
@@ -160,26 +232,40 @@
       object-fit: cover;
       pointer-events: none;
     }
-    .flip-face.back { transform: rotateY(180deg); }
-    .flip-layer.next.active { animation: flipNext 0.9s cubic-bezier(.45,.08,.2,1) forwards; }
-    .flip-layer.prev.active { animation: flipPrev 0.9s cubic-bezier(.45,.08,.2,1) forwards; }
+
+    .flip-face.back {
+      transform: rotateY(180deg);
+    }
+
+    .flip-layer.next.active {
+      animation: flipNext 0.9s cubic-bezier(.45,.08,.2,1) forwards;
+    }
+
+    .flip-layer.prev.active {
+      animation: flipPrev 0.9s cubic-bezier(.45,.08,.2,1) forwards;
+    }
+
     @keyframes flipNext {
       from { transform: rotateY(0deg); }
       to   { transform: rotateY(-180deg); }
     }
+
     @keyframes flipPrev {
       from { transform: rotateY(0deg); }
       to   { transform: rotateY(180deg); }
     }
+
     .desktop-zones {
       position: fixed;
       inset: 0;
       z-index: 30;
       pointer-events: none;
     }
+
     .zone {
       position: absolute;
-      top: 0; bottom: 0;
+      top: 0;
+      bottom: 0;
       width: 28vw;
       min-width: 120px;
       display: flex;
@@ -191,21 +277,37 @@
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
     }
-    .zone:hover { opacity: 1; }
-    .zone.left { left: 0; }
-    .zone.right { right: 0; }
+
+    .zone:hover {
+      opacity: 1;
+    }
+
+    .zone.left {
+      left: 0;
+    }
+
+    .zone.right {
+      right: 0;
+    }
+
     .zone span {
-      width: 56px; height: 56px;
+      width: 56px;
+      height: 56px;
       border-radius: 999px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 34px; color: #444;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      color: #444;
       background: rgba(255,255,255,0.78);
       backdrop-filter: blur(6px);
       box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
+
     .mobile-controls {
       display: none;
     }
+
     .mobile-controls button {
       border: 1px solid rgba(34,34,34,0.14);
       background: rgba(255,255,255,0.95);
@@ -218,10 +320,15 @@
       box-shadow: 0 10px 26px rgba(0,0,0,0.10);
       -webkit-tap-highlight-color: transparent;
     }
-    .mobile-controls button:active { transform: translateY(1px) scale(0.99); }
+
+    .mobile-controls button:active {
+      transform: translateY(1px) scale(0.99);
+    }
+
     .hint {
       position: fixed;
-      left: 50%; bottom: 24px;
+      left: 50%;
+      bottom: 24px;
       transform: translateX(-50%);
       z-index: 40;
       font-size: 12px;
@@ -231,79 +338,164 @@
       animation: fadeOut 5.5s ease forwards;
       animation-delay: 4s;
     }
-    @keyframes fadeOut { to { opacity: 0; } }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+
     @media (max-width: 900px) {
-      .stage { padding: 68px 10px 112px; }
-      .book.cover-mode,
+      .stage {
+        padding: 68px 10px 112px;
+      }
+
+      .book.single-mode,
       .book.spread-mode {
         width: min(94vw, calc((100vh - 190px) * 0.707));
         height: min(76vh, calc((100vw - 20px) / 0.707));
         max-width: 595px;
         max-height: 842px;
       }
-      .spread-frame::before, .spread-frame::after { display: none; }
-      .left-page, .right-page, .flip-layer { width: 100%; left: 0; right: auto; }
-      .right-page { display: none; }
-      .flip-layer.next, .flip-layer.prev { left: 0; transform-origin: center center; }
-      .flip-layer.next.active { animation: fadeSwap .5s ease forwards; }
-      .flip-layer.prev.active { animation: fadeSwap .5s ease forwards; }
-      @keyframes fadeSwap {
-        from { opacity: 0.96; transform: translateX(0); }
-        50%  { opacity: 0.7; }
-        to   { opacity: 0; transform: translateX(0); }
+
+      .spread-frame::before,
+      .spread-frame::after {
+        display: none;
       }
-      .desktop-zones .zone { width: 36vw; }
+
+      .left-page,
+      .right-page,
+      .flip-layer {
+        width: 100%;
+        left: 0;
+        right: auto;
+      }
+
+      .right-page {
+        display: none;
+      }
+
+      .flip-layer.next,
+      .flip-layer.prev {
+        left: 0;
+        transform-origin: center center;
+      }
+
+      .flip-layer.next.active,
+      .flip-layer.prev.active {
+        animation: fadeSwap .5s ease forwards;
+      }
+
+      @keyframes fadeSwap {
+        from {
+          opacity: 0.96;
+          transform: translateX(0);
+        }
+
+        50% {
+          opacity: 0.7;
+        }
+
+        to {
+          opacity: 0;
+          transform: translateX(0);
+        }
+      }
+
+      .desktop-zones .zone {
+        width: 36vw;
+      }
+
       .mobile-controls {
         position: fixed;
-        left: 14px; right: 14px; bottom: 16px;
+        left: 14px;
+        right: 14px;
+        bottom: 16px;
         display: flex;
         justify-content: space-between;
         gap: 12px;
         z-index: 45;
       }
+
       .hint {
         bottom: 78px;
         width: calc(100vw - 32px);
         text-align: center;
         font-size: 11px;
       }
-      .zone span { width: 44px; height: 44px; font-size: 28px; }
-      .topbar { padding: 12px 14px; }
+
+      .zone span {
+        width: 44px;
+        height: 44px;
+        font-size: 28px;
+      }
+
+      .topbar {
+        padding: 12px 14px;
+      }
     }
   </style>
 </head>
+
 <body>
+
   <div class="topbar">
     <a href="index.html">← Retour</a>
-    <div class="meta"><span id="pageCounter">1 / 41</span></div>
+    <div class="meta">
+      <span id="pageCounter">1 / 42</span>
+    </div>
   </div>
 
   <div class="stage">
-    <div class="book cover-mode" id="book">
-      <div class="cover-frame" id="coverFrame">
-        <div class="sheet cover-sheet"><img id="coverImg" alt="Portfolio cover"></div>
+
+    <div class="book single-mode" id="book">
+
+      <!-- A4 단독 페이지 -->
+      <div class="single-frame" id="singleFrame">
+        <div class="sheet single-sheet">
+          <img id="singleImg" alt="Portfolio page">
+        </div>
       </div>
 
+      <!-- 펼침 페이지 -->
       <div class="spread-frame hidden" id="spreadFrame">
-        <div class="sheet left-page"><img id="leftImg" alt="Left page"></div>
-        <div class="sheet right-page"><img id="rightImg" alt="Right page"></div>
+
+        <div class="sheet left-page">
+          <img id="leftImg" alt="Left page">
+        </div>
+
+        <div class="sheet right-page">
+          <img id="rightImg" alt="Right page">
+        </div>
 
         <div class="flip-layer next" id="flipNextLayer">
-          <div class="flip-face front"><img id="flipNextFront" alt="Turning front page"></div>
-          <div class="flip-face back"><img id="flipNextBack" alt="Turning back page"></div>
+          <div class="flip-face front">
+            <img id="flipNextFront" alt="Turning front page">
+          </div>
+          <div class="flip-face back">
+            <img id="flipNextBack" alt="Turning back page">
+          </div>
         </div>
 
         <div class="flip-layer prev" id="flipPrevLayer">
-          <div class="flip-face front"><img id="flipPrevFront" alt="Turning previous page"></div>
-          <div class="flip-face back"><img id="flipPrevBack" alt="Turning previous back page"></div>
+          <div class="flip-face front">
+            <img id="flipPrevFront" alt="Turning previous back">
+          </div>
+          <div class="flip-face back">
+            <img id="flipPrevBack" alt="Turning previous page">
+          </div>
         </div>
+
       </div>
     </div>
   </div>
 
   <div class="desktop-zones" aria-hidden="true">
-    <div class="zone left" id="prevZone"><span>‹</span></div>
-    <div class="zone right" id="nextZone"><span>›</span></div>
+    <div class="zone left" id="prevZone">
+      <span>‹</span>
+    </div>
+
+    <div class="zone right" id="nextZone">
+      <span>›</span>
+    </div>
   </div>
 
   <div class="mobile-controls" aria-label="Navigation mobile">
@@ -311,197 +503,657 @@
     <button id="nextButton" type="button">SUIVANT →</button>
   </div>
 
-  <div class="hint">← CLIQUEZ · GLISSEZ · FLÈCHES CLAVIER →</div>
+  <div class="hint">
+    ← CLIQUEZ · GLISSEZ · FLÈCHES CLAVIER →
+  </div>
 
   <script>
     /* ==============================================================
        EASY UPDATE
-       1) pages 폴더 안에 page-01.jpg, page-02.jpg ... 형식으로 넣기
-       2) 아래 TOTAL_PAGES 숫자만 실제 페이지 수로 바꾸기
+
+       pages/
+       ├── page-01.jpg
+       ├── page-02.jpg
+       ├── ...
+       ├── page-41.jpg
+       └── page-42.jpg   ← 마지막 A4 단독 페이지
+
+       TOTAL_PAGES 숫자만 실제 전체 페이지 수와 맞추면 됩니다.
        ============================================================== */
-    const TOTAL_PAGES = 41;
+
+    const TOTAL_PAGES = 42;
+
     const FOLDER = 'pages/';
     const PREFIX = 'page-';
     const EXT = '.jpg';
-    /* ============================================================== */
+
+    /* ==============================================================
+       마지막 페이지 번호
+       마지막 페이지는 항상 A4 단독 페이지로 표시됩니다.
+       ============================================================== */
+
+    const LAST_SINGLE_PAGE = TOTAL_PAGES;
+
 
     const book = document.getElementById('book');
-    const coverFrame = document.getElementById('coverFrame');
+
+    const singleFrame = document.getElementById('singleFrame');
     const spreadFrame = document.getElementById('spreadFrame');
-    const coverImg = document.getElementById('coverImg');
+
+    const singleImg = document.getElementById('singleImg');
+
     const leftImg = document.getElementById('leftImg');
     const rightImg = document.getElementById('rightImg');
+
     const pageCounter = document.getElementById('pageCounter');
+
     const flipNextLayer = document.getElementById('flipNextLayer');
     const flipPrevLayer = document.getElementById('flipPrevLayer');
+
     const flipNextFront = document.getElementById('flipNextFront');
     const flipNextBack = document.getElementById('flipNextBack');
+
     const flipPrevFront = document.getElementById('flipPrevFront');
     const flipPrevBack = document.getElementById('flipPrevBack');
 
+
+    /*
+     * 현재 화면의 왼쪽 페이지 번호.
+     *
+     * 1  = 첫 번째 단독 페이지
+     * 2  = 2–3 펼침
+     * 4  = 4–5 펼침
+     * ...
+     * 40 = 40–41 펼침
+     * 42 = 마지막 단독 페이지
+     */
+
     let currentLeft = 1;
+
     let isAnimating = false;
+
 
     function pageSrc(n) {
       return FOLDER + PREFIX + String(n).padStart(2, '0') + EXT;
     }
 
+
     function isMobile() {
       return window.innerWidth <= 900;
     }
 
-    function hasSpread() {
-      return !isMobile() && currentLeft >= 2;
+
+    /*
+     * 단독 페이지인지 판단
+     *
+     * 데스크톱:
+     *   page 1
+     *   page 42
+     *
+     * 모바일:
+     *   모든 페이지가 한 장씩 표시되므로 항상 단독
+     */
+
+    function isSinglePage() {
+      return (
+        isMobile() ||
+        currentLeft === 1 ||
+        currentLeft === LAST_SINGLE_PAGE
+      );
     }
+
 
     function setCounter() {
-      if (currentLeft === 1 || isMobile()) {
-        pageCounter.textContent = currentLeft + ' / ' + TOTAL_PAGES;
-      } else {
-        const right = Math.min(currentLeft + 1, TOTAL_PAGES);
-        pageCounter.textContent = currentLeft + '–' + right + ' / ' + TOTAL_PAGES;
+
+      if (isMobile()) {
+        pageCounter.textContent =
+          currentLeft + ' / ' + TOTAL_PAGES;
+
+        return;
       }
+
+      if (currentLeft === 1 || currentLeft === LAST_SINGLE_PAGE) {
+        pageCounter.textContent =
+          currentLeft + ' / ' + TOTAL_PAGES;
+
+        return;
+      }
+
+      const right = Math.min(
+        currentLeft + 1,
+        TOTAL_PAGES
+      );
+
+      pageCounter.textContent =
+        currentLeft + '–' + right + ' / ' + TOTAL_PAGES;
     }
 
+
     function render() {
-      coverImg.src = pageSrc(currentLeft);
-      if (currentLeft === 1 || isMobile()) {
+
+      /*
+       * 단독 페이지
+       */
+
+      if (isSinglePage()) {
+
         book.classList.remove('spread-mode');
-        book.classList.add('cover-mode');
-        coverFrame.classList.remove('hidden');
+        book.classList.add('single-mode');
+
         spreadFrame.classList.add('hidden');
-      } else {
-        book.classList.remove('cover-mode');
-        book.classList.add('spread-mode');
-        coverFrame.classList.add('hidden');
-        spreadFrame.classList.remove('hidden');
-        leftImg.src = pageSrc(currentLeft);
-        rightImg.src = pageSrc(Math.min(currentLeft + 1, TOTAL_PAGES));
+        singleFrame.classList.remove('hidden');
+
+        singleImg.src = pageSrc(currentLeft);
+
       }
+
+      /*
+       * 데스크톱 펼침
+       */
+
+      else {
+
+        book.classList.remove('single-mode');
+        book.classList.add('spread-mode');
+
+        singleFrame.classList.add('hidden');
+        spreadFrame.classList.remove('hidden');
+
+        leftImg.src = pageSrc(currentLeft);
+
+        rightImg.src =
+          pageSrc(
+            Math.min(
+              currentLeft + 1,
+              TOTAL_PAGES - 1
+            )
+          );
+      }
+
       setCounter();
     }
 
+
+    /*
+     * 다음 페이지
+     *
+     * 1 → 2–3
+     * 2–3 → 4–5
+     * ...
+     * 40–41 → 42
+     */
+
     function nextTarget() {
-      if (currentLeft === 1) return 2;
-      return currentLeft + 2 <= TOTAL_PAGES ? currentLeft + 2 : currentLeft;
+
+      /*
+       * 첫 페이지에서 펼침으로
+       */
+
+      if (currentLeft === 1) {
+        return 2;
+      }
+
+      /*
+       * 40–41 다음은 마지막 42
+       */
+
+      if (currentLeft === TOTAL_PAGES - 2) {
+        return TOTAL_PAGES;
+      }
+
+      /*
+       * 마지막 페이지에서는 정지
+       */
+
+      if (currentLeft === LAST_SINGLE_PAGE) {
+        return currentLeft;
+      }
+
+      /*
+       * 일반 펼침
+       */
+
+      return currentLeft + 2;
     }
+
+
+    /*
+     * 이전 페이지
+     *
+     * 42 → 40–41
+     * 40–41 → 38–39
+     * ...
+     * 2–3 → 1
+     */
 
     function prevTarget() {
-      if (currentLeft <= 1) return 1;
-      if (currentLeft === 2) return 1;
-      return Math.max(2, currentLeft - 2);
+
+      /*
+       * 첫 페이지에서는 정지
+       */
+
+      if (currentLeft <= 1) {
+        return 1;
+      }
+
+      /*
+       * 마지막 단독 페이지에서
+       * 바로 직전 펼침으로 돌아감
+       */
+
+      if (currentLeft === LAST_SINGLE_PAGE) {
+        return Math.max(
+          2,
+          TOTAL_PAGES - 2
+        );
+      }
+
+      /*
+       * 첫 펼침에서 표지로
+       */
+
+      if (currentLeft === 2) {
+        return 1;
+      }
+
+      /*
+       * 일반 펼침
+       */
+
+      return Math.max(
+        2,
+        currentLeft - 2
+      );
     }
+
+
+    /*
+     * 데스크톱 다음 페이지 넘김
+     */
 
     function animateNextDesktop(targetLeft) {
-      flipNextFront.src = pageSrc(currentLeft + 1);
-      flipNextBack.src = pageSrc(targetLeft);
+
+      /*
+       * 마지막 페이지로 넘어가는 경우
+       *
+       * 40–41 → 42
+       *
+       * 오른쪽 페이지가 넘어가면서
+       * 마지막 단독 페이지가 나타나도록 구성
+       */
+
+      if (targetLeft === LAST_SINGLE_PAGE) {
+
+        flipNextFront.src =
+          pageSrc(currentLeft + 1);
+
+        flipNextBack.src =
+          pageSrc(LAST_SINGLE_PAGE);
+
+      }
+
+      else {
+
+        flipNextFront.src =
+          pageSrc(currentLeft + 1);
+
+        flipNextBack.src =
+          pageSrc(targetLeft);
+
+      }
+
       flipNextLayer.classList.remove('active');
+
       void flipNextLayer.offsetWidth;
+
       flipNextLayer.classList.add('active');
+
+
       setTimeout(() => {
+
         flipNextLayer.classList.remove('active');
+
         currentLeft = targetLeft;
+
         render();
+
         isAnimating = false;
+
       }, 900);
     }
+
+
+    /*
+     * 데스크톱 이전 페이지 넘김
+     */
 
     function animatePrevDesktop(targetLeft) {
-      flipPrevFront.src = pageSrc(currentLeft);
-      flipPrevBack.src = pageSrc(targetLeft + 1);
+
+      /*
+       * 42 → 40–41
+       *
+       * 마지막 페이지에서 이전으로 돌아갈 때도
+       * 자연스럽게 페이지가 넘어가도록 처리
+       */
+
+      if (currentLeft === LAST_SINGLE_PAGE) {
+
+        flipPrevFront.src =
+          pageSrc(LAST_SINGLE_PAGE);
+
+        flipPrevBack.src =
+          pageSrc(targetLeft);
+
+      }
+
+      else {
+
+        flipPrevFront.src =
+          pageSrc(currentLeft);
+
+        flipPrevBack.src =
+          pageSrc(targetLeft + 1);
+
+      }
+
       flipPrevLayer.classList.remove('active');
+
       void flipPrevLayer.offsetWidth;
+
       flipPrevLayer.classList.add('active');
+
+
       setTimeout(() => {
+
         flipPrevLayer.classList.remove('active');
+
         currentLeft = targetLeft;
+
         render();
+
         isAnimating = false;
+
       }, 900);
     }
 
+
     function next() {
+
       if (isAnimating) return;
+
       const targetLeft = nextTarget();
+
       if (targetLeft === currentLeft) return;
+
       isAnimating = true;
+
+
+      /*
+       * 모바일
+       * 한 페이지씩 이동
+       */
+
       if (isMobile()) {
-        currentLeft = currentLeft === 1 ? 2 : Math.min(currentLeft + 1, TOTAL_PAGES);
+
+        currentLeft =
+          Math.min(
+            currentLeft + 1,
+            TOTAL_PAGES
+          );
+
         render();
+
         isAnimating = false;
+
         return;
       }
+
+
+      /*
+       * 데스크톱
+       *
+       * 1 → 2–3
+       */
+
       if (currentLeft === 1) {
+
         currentLeft = 2;
+
         render();
+
         isAnimating = false;
+
         return;
       }
+
+
+      /*
+       * 펼침 → 다음 펼침 / 마지막 단독 페이지
+       */
+
       animateNextDesktop(targetLeft);
     }
 
+
     function prev() {
+
       if (isAnimating) return;
+
       const targetLeft = prevTarget();
+
       if (targetLeft === currentLeft) return;
+
       isAnimating = true;
+
+
+      /*
+       * 모바일
+       */
+
       if (isMobile()) {
-        currentLeft = Math.max(1, currentLeft - 1);
+
+        currentLeft =
+          Math.max(
+            1,
+            currentLeft - 1
+          );
+
         render();
+
         isAnimating = false;
+
         return;
       }
+
+
+      /*
+       * 2–3 → 1
+       */
+
       if (currentLeft === 2) {
+
         currentLeft = 1;
+
         render();
+
         isAnimating = false;
+
         return;
       }
+
+
+      /*
+       * 42 → 40–41
+       *
+       * 또는 일반 펼침 이전 이동
+       */
+
       animatePrevDesktop(targetLeft);
     }
 
-    document.getElementById('nextZone').addEventListener('click', next);
-    document.getElementById('prevZone').addEventListener('click', prev);
-    document.getElementById('nextButton').addEventListener('click', next);
-    document.getElementById('prevButton').addEventListener('click', prev);
+
+    /*
+     * 클릭
+     */
+
+    document
+      .getElementById('nextZone')
+      .addEventListener('click', next);
+
+    document
+      .getElementById('prevZone')
+      .addEventListener('click', prev);
+
+    document
+      .getElementById('nextButton')
+      .addEventListener('click', next);
+
+    document
+      .getElementById('prevButton')
+      .addEventListener('click', prev);
+
+
+    /*
+     * 키보드
+     */
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') { e.preventDefault(); next(); }
-      else if (e.key === 'ArrowLeft' || e.key === 'PageUp') { e.preventDefault(); prev(); }
+
+      if (
+        e.key === 'ArrowRight' ||
+        e.key === ' ' ||
+        e.key === 'PageDown'
+      ) {
+        e.preventDefault();
+        next();
+      }
+
+      else if (
+        e.key === 'ArrowLeft' ||
+        e.key === 'PageUp'
+      ) {
+        e.preventDefault();
+        prev();
+      }
+
     });
+
+
+    /*
+     * 터치 / 스와이프
+     */
 
     let touchStartX = null;
     let touchStartY = null;
-    document.addEventListener('touchstart', (e) => {
-      touchStartX = e.changedTouches[0].screenX;
-      touchStartY = e.changedTouches[0].screenY;
-    }, { passive: true });
-    document.addEventListener('touchend', (e) => {
-      if (touchStartX === null) return;
-      const dx = e.changedTouches[0].screenX - touchStartX;
-      const dy = e.changedTouches[0].screenY - touchStartY;
-      const threshold = isMobile() ? 24 : 42;
-      if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy) * 1.15) {
-        if (dx < 0) next(); else prev();
-      }
-      touchStartX = null;
-      touchStartY = null;
-    }, { passive: true });
+
+
+    document.addEventListener(
+      'touchstart',
+      (e) => {
+
+        touchStartX =
+          e.changedTouches[0].screenX;
+
+        touchStartY =
+          e.changedTouches[0].screenY;
+
+      },
+      { passive: true }
+    );
+
+
+    document.addEventListener(
+      'touchend',
+      (e) => {
+
+        if (touchStartX === null) return;
+
+        const dx =
+          e.changedTouches[0].screenX -
+          touchStartX;
+
+        const dy =
+          e.changedTouches[0].screenY -
+          touchStartY;
+
+        const threshold =
+          isMobile() ? 24 : 42;
+
+
+        if (
+          Math.abs(dx) > threshold &&
+          Math.abs(dx) >
+            Math.abs(dy) * 1.15
+        ) {
+
+          if (dx < 0) {
+            next();
+          } else {
+            prev();
+          }
+
+        }
+
+        touchStartX = null;
+        touchStartY = null;
+
+      },
+      { passive: true }
+    );
+
+
+    /*
+     * 화면 크기 변경
+     */
 
     let resizeTimer = null;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(render, 120);
-    });
 
-    // preload
-    for (let i = 1; i <= TOTAL_PAGES; i++) {
+    window.addEventListener(
+      'resize',
+      () => {
+
+        clearTimeout(resizeTimer);
+
+        resizeTimer =
+          setTimeout(render, 120);
+
+      }
+    );
+
+
+    /*
+     * 이미지 preload
+     */
+
+    for (
+      let i = 1;
+      i <= TOTAL_PAGES;
+      i++
+    ) {
+
       const img = new Image();
+
       img.src = pageSrc(i);
+
     }
 
+
+    /*
+     * 최초 렌더링
+     */
+
     render();
+
   </script>
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925" integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}' crossorigin="anonymous"></script>
+
+  <script
+    type="module"
+    src="https://static.cloudflareinsights.com/beacon.min.js/v3d52b47920f24c319d37e2661827c42b1787588026925"
+    integrity="sha512-d9sL6GJLXn6fInD1+TVXhTcQOsmxeHfmHAvwGDIxp5TO+uo1fiWW7mHomMj4MLRlCsJDTqXzWLHJFFlPCEIj/A=="
+    data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79"}'
+    crossorigin="anonymous">
+  </script>
+
 </body>
 </html>
+```
