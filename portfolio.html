@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio — Gene JEONG</title>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-3L72KGY0LK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-3L72KGY0LK');
+  </script>
+  <style>
+    :root {
+      --bg: #f6f5f1;
+      --ink: #222;
+      --muted: #8f8f8f;
+      --paper: #fff;
+      --book-shadow: drop-shadow(0 24px 52px rgba(0,0,0,0.14)) drop-shadow(0 10px 22px rgba(0,0,0,0.07));
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg);
+      background-image: url("https://www.transparenttextures.com/patterns/white-paper.png");
+      color: var(--ink);
+      font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      touch-action: manipulation;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      display: flex;
+      justify-content: flex-start;
+      padding: 18px 24px;
+      pointer-events: none;
+    }
+
+    .topbar a {
+      pointer-events: auto;
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: #444;
+    }
+
+    .stage {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 70px 16px 100px;
+      perspective: 2600px;
+    }
+
+    .viewer {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .book {
+      position: relative;
+      user-select: none;
+      filter: var(--book-shadow);
+      transition: width 0.34s ease, height 0.34s ease;
+    }
+
+    .book.cover-mode {
+      width: min(88vw, calc((100vh - 190px) * 0.707));
+      height: min(76vh, calc((100vw - 32px) / 0.707));
+      max-width: 595px;
+      max-height: 842px;
+    }
+
+    .book.spread-mode {
+      width: min(94vw, calc((100vh - 200px) * 1.414));
+      height: min(74vh, calc((100vw - 32px) / 1.414));
+      max-width: 1190px;
+      max-height: 842px;
+    }
+
+    .cover-frame,
+    .spread-frame {
+      position: absolute;
+      inset: 0;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .sheet {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      background: var(--paper);
+      overflow: hidden;
+      backface-visibility: hidden;
+    }
+
+    .sheet img,
+    .flip-face img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #fff;
+      pointer-events: none;
+      -webkit-user-drag: none;
+    }
+
+    .cover-sheet {
+      inset: 0;
+    }
+
+    .left-page,
+    .right-page {
+      width: 50%;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.03);
+    }
+
+    .left-page { left: 0; }
+    .right-page { right: 0; }
+
+    .spread-frame::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 42px;
+      background: linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0.08) 24%, rgba(0,0,0,0.16) 50%, rgba(0,0,0,0.08) 76%, rgba(0,0,0,0));
+      filter: blur(8px);
+      z-index: 8;
+      pointer-events: none;
+    }
+
+    .spread-frame::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.96), rgba(94,94,94,0.30) 12%, rgba(56,56,56,0.42) 50%, rgba(94,94,94,0.30) 88%, rgba(255,255,255,0.96));
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .flip-layer {
+      position: absolute;
+      top: 0;
+      width: 50%;
+      height: 100%;
+      z-index: 20;
+      pointer-events: none;
+      transform-style: preserve-3d;
+      display: none;
+    }
+
+    .flip-layer.active {
+      display: block;
+    }
+
+    .flip-layer.next {
+      right: 0;
+      transform-origin: left center;
+    }
+
+    .flip-layer.prev {
+      left: 0;
+      transform-origin: right center;
+    }
+
+    .flip-face {
+      position: absolute;
+      inset: 0;
+      background: var(--paper);
+      backface-visibility: hidden;
+      overflow: hidden;
+      box-shadow: 0 14px 32px rgba(0,0,0,0.16);
+    }
+
+    .flip-face.back {
+      transform: rotateY(180deg);
+    }
+
+    .flip-layer.next.active {
+      animation: flipNext 0.82s cubic-bezier(.45,.08,.2,1) forwards;
+    }
+
+    .flip-layer.prev.active {
+      animation: flipPrev 0.82s cubic-bezier(.45,.08,.2,1) forwards;
+    }
+
+    @keyframes flipNext {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(-180deg); }
+    }
+
+    @keyframes flipPrev {
+      from { transform: rotateY(0deg); }
+      to   { transform: rotateY(180deg); }
+    }
+
+    .status {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      color: var(--muted);
+      text-transform: uppercase;
+      min-height: 14px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .desktop-zones {
+      position: fixed;
+      inset: 0;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .zone {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 26vw;
+      min-width: 110px;
+      pointer-events: auto;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .zone.left { left: 0; }
+    .zone.right { right: 0; }
+
+    .mobile-controls {
+      display: none;
+    }
+
+    .mobile-controls button {
+      border: 0;
+      background: transparent;
+      color: #444;
+      border-radius: 0;
+      padding: 0;
+      min-width: 0;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      box-shadow: none;
+      -webkit-tap-highlight-color: transparent;
+      text-decoration: none;
+      font-family: inherit;
+    }
+
+    .mobile-controls button:active {
+      opacity: 0.7;
+    }
+
+    .hint {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      z-index: 40;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      color: #b1b1b1;
+      pointer-events: none;
+      animation: fadeOut 5s ease forwards;
+      animation-delay: 4s;
+    }
+
+    @keyframes fadeOut {
+      to { opacity: 0; }
+    }
+
+    @media (max-width: 900px) {
+      .stage {
+        padding: 66px 10px 112px;
+      }
+
+      .book.cover-mode,
+      .book.spread-mode {
+        width: min(94vw, calc((100vh - 196px) * 0.707));
+        height: min(76vh, calc((100vw - 20px) / 0.707));
+        max-width: 595px;
+        max-height: 842px;
+      }
+
+      .spread-frame::before,
+      .spread-frame::after {
+        display: none;
+      }
+
+      .left-page,
+      .right-page,
+      .flip-layer {
+        width: 100%;
+        left: 0;
+        right: auto;
+      }
+
+      .right-page {
+        display: none;
+      }
+
+      .flip-layer.next,
+      .flip-layer.prev {
+        left: 0;
+        transform-origin: center center;
+      }
+
+      .flip-layer.next.active,
+      .flip-layer.prev.active {
+        animation: fadeSwap 0.42s ease forwards;
+      }
+
+      @keyframes fadeSwap {
+        from { opacity: 0.96; }
+        50%  { opacity: 0.74; }
+        to   { opacity: 0; }
+      }
+
+      .mobile-controls {
+        position: fixed;
+        left: 14px;
+        right: 14px;
+        bottom: 18px;
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        z-index: 45;
+      }
+
+      .status {
+        font-size: 10px;
+        letter-spacing: 0.13em;
+      }
+
+      .hint {
+        bottom: 78px;
+        width: calc(100vw - 28px);
+        text-align: center;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a href="index.html">← Retour</a>
+  </div>
+
+  <div class="stage">
+    <div class="viewer">
+      <div class="book cover-mode" id="book">
+        <div class="cover-frame" id="coverFrame">
+          <div class="sheet cover-sheet"><img id="coverImg" alt="Portfolio cover"></div>
+        </div>
+
+        <div class="spread-frame hidden" id="spreadFrame">
+          <div class="sheet left-page"><img id="leftImg" alt="Left page"></div>
+          <div class="sheet right-page"><img id="rightImg" alt="Right page"></div>
+
+          <div class="flip-layer next" id="flipNextLayer">
+            <div class="flip-face front"><img id="flipNextFront" alt="Turning front page"></div>
+            <div class="flip-face back"><img id="flipNextBack" alt="Turning back page"></div>
+          </div>
+
+          <div class="flip-layer prev" id="flipPrevLayer">
+            <div class="flip-face front"><img id="flipPrevFront" alt="Turning previous page"></div>
+            <div class="flip-face back"><img id="flipPrevBack" alt="Turning previous back page"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="status" id="pageCounter">1 / 41</div>
+    </div>
+  </div>
+
+  <div class="desktop-zones" aria-hidden="true">
+    <div class="zone left" id="prevZone"></div>
+    <div class="zone right" id="nextZone"></div>
+  </div>
+
+  <div class="mobile-controls" aria-label="Navigation mobile">
+    <button id="prevButton" type="button">← PRÉCÉDENT</button>
+    <button id="nextButton" type="button">SUIVANT →</button>
+  </div>
+
+  <div class="hint">cliquez à gauche ou à droite · glissez sur mobile</div>
+
+  <script>
+    /* ==============================================================
+       EASY UPDATE
+       1) pages 폴더 안에 page-01.jpg, page-02.jpg ... 형식으로 넣기
+       2) 아래 TOTAL_PAGES 숫자만 실제 페이지 수로 바꾸기
+       ============================================================== */
+    const TOTAL_PAGES = 41;
+    const FOLDER = 'pages/';
+    const PREFIX = 'page-';
+    const EXT = '.jpg';
+    /* ============================================================== */
+
+    const book = document.getElementById('book');
+    const coverFrame = document.getElementById('coverFrame');
+    const spreadFrame = document.getElementById('spreadFrame');
+    const coverImg = document.getElementById('coverImg');
+    const leftImg = document.getElementById('leftImg');
+    const rightImg = document.getElementById('rightImg');
+    const pageCounter = document.getElementById('pageCounter');
+    const flipNextLayer = document.getElementById('flipNextLayer');
+    const flipPrevLayer = document.getElementById('flipPrevLayer');
+    const flipNextFront = document.getElementById('flipNextFront');
+    const flipNextBack = document.getElementById('flipNextBack');
+    const flipPrevFront = document.getElementById('flipPrevFront');
+    const flipPrevBack = document.getElementById('flipPrevBack');
+
+    let currentLeft = 1;
+    let isAnimating = false;
+
+    function pageSrc(n) {
+      return FOLDER + PREFIX + String(n).padStart(2, '0') + EXT;
+    }
+
+    function isMobile() {
+      return window.innerWidth <= 900;
+    }
+
+    function setCounter() {
+      if (currentLeft === 1 || isMobile()) {
+        pageCounter.textContent = currentLeft + ' / ' + TOTAL_PAGES;
+      } else {
+        const right = Math.min(currentLeft + 1, TOTAL_PAGES);
+        pageCounter.textContent = currentLeft + ' – ' + right + ' / ' + TOTAL_PAGES;
+      }
+    }
+
+    function render() {
+      if (currentLeft === 1 || isMobile()) {
+        book.classList.remove('spread-mode');
+        book.classList.add('cover-mode');
+        coverFrame.classList.remove('hidden');
+        spreadFrame.classList.add('hidden');
+        coverImg.src = pageSrc(currentLeft);
+      } else {
+        book.classList.remove('cover-mode');
+        book.classList.add('spread-mode');
+        coverFrame.classList.add('hidden');
+        spreadFrame.classList.remove('hidden');
+        leftImg.src = pageSrc(currentLeft);
+        rightImg.src = pageSrc(Math.min(currentLeft + 1, TOTAL_PAGES));
+      }
+      setCounter();
+    }
+
+    function nextTarget() {
+      if (isMobile()) return Math.min(currentLeft + 1, TOTAL_PAGES);
+      if (currentLeft === 1) return 2;
+      return currentLeft + 2 <= TOTAL_PAGES ? currentLeft + 2 : currentLeft;
+    }
+
+    function prevTarget() {
+      if (isMobile()) return Math.max(1, currentLeft - 1);
+      if (currentLeft <= 1) return 1;
+      if (currentLeft === 2) return 1;
+      return Math.max(2, currentLeft - 2);
+    }
+
+    function animateNextDesktop(targetLeft) {
+      const nextRight = Math.min(targetLeft + 1, TOTAL_PAGES);
+      rightImg.src = pageSrc(nextRight);
+      flipNextFront.src = pageSrc(currentLeft + 1);
+      flipNextBack.src = pageSrc(targetLeft);
+      flipNextLayer.classList.remove('active');
+      void flipNextLayer.offsetWidth;
+      flipNextLayer.classList.add('active');
+      setTimeout(() => {
+        flipNextLayer.classList.remove('active');
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+      }, 820);
+    }
+
+    function animatePrevDesktop(targetLeft) {
+      leftImg.src = pageSrc(targetLeft);
+      flipPrevFront.src = pageSrc(currentLeft);
+      flipPrevBack.src = pageSrc(targetLeft + 1);
+      flipPrevLayer.classList.remove('active');
+      void flipPrevLayer.offsetWidth;
+      flipPrevLayer.classList.add('active');
+      setTimeout(() => {
+        flipPrevLayer.classList.remove('active');
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+      }, 820);
+    }
+
+    function next() {
+      if (isAnimating) return;
+      const targetLeft = nextTarget();
+      if (targetLeft === currentLeft) return;
+      isAnimating = true;
+
+      if (isMobile()) {
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+        return;
+      }
+
+      if (currentLeft === 1) {
+        currentLeft = 2;
+        render();
+        isAnimating = false;
+        return;
+      }
+
+      animateNextDesktop(targetLeft);
+    }
+
+    function prev() {
+      if (isAnimating) return;
+      const targetLeft = prevTarget();
+      if (targetLeft === currentLeft) return;
+      isAnimating = true;
+
+      if (isMobile()) {
+        currentLeft = targetLeft;
+        render();
+        isAnimating = false;
+        return;
+      }
+
+      if (currentLeft === 2) {
+        currentLeft = 1;
+        render();
+        isAnimating = false;
+        return;
+      }
+
+      animatePrevDesktop(targetLeft);
+    }
+
+    document.getElementById('nextZone').addEventListener('click', next);
+    document.getElementById('prevZone').addEventListener('click', prev);
+    document.getElementById('nextButton').addEventListener('click', next);
+    document.getElementById('prevButton').addEventListener('click', prev);
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        e.preventDefault();
+        next();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        e.preventDefault();
+        prev();
+      }
+    });
+
+    let touchStartX = null;
+    let touchStartY = null;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+      touchStartY = e.changedTouches[0].screenY;
+    }, { passive: true });
+
+    document.addEventListener('touchend', (e) => {
+      if (touchStartX === null) return;
+      const dx = e.changedTouches[0].screenX - touchStartX;
+      const dy = e.changedTouches[0].screenY - touchStartY;
+      const threshold = isMobile() ? 24 : 42;
+      if (Math.abs(dx) > threshold && Math.abs(dx) > Math.abs(dy) * 1.15) {
+        if (dx < 0) next(); else prev();
+      }
+      touchStartX = null;
+      touchStartY = null;
+    }, { passive: true });
+
+    let resizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        if (isMobile() && currentLeft > 1) {
+          currentLeft = Math.min(currentLeft, TOTAL_PAGES);
+        } else if (!isMobile() && currentLeft > 1 && currentLeft % 2 !== 0) {
+          currentLeft -= 1;
+        }
+        render();
+      }, 120);
+    });
+
+    for (let i = 1; i <= TOTAL_PAGES; i++) {
+      const img = new Image();
+      img.src = pageSrc(i);
+    }
+
+    render();
+  </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>
